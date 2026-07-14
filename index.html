@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0D47A1">
+<title>Inventário · Agroquima</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{
+  --az:#0D47A1;--az2:#002B5B;--az3:#64B5F6;--az4:#EFF6FF;
+  --vd:#16a34a;--vd2:#dcfce7;--vd3:#86efac;
+  --vm:#dc2626;--vm2:#fee2e2;--vm3:#fca5a5;
+  --am:#d97706;--am2:#fef3c7;--am3:#fcd34d;
+  --bg:#EEF2F7;--wh:#fff;--bd:#e2e8f0;
+  --tx:#0f172a;--tx2:#475569;--tx3:#94a3b8;
+  --sh:0 1px 6px rgba(0,0,0,.10);
+  --r:14px;--rs:8px;
+  --sb:env(safe-area-inset-bottom,0px);
+  --st:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{font-size:16px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--tx);min-height:100dvh;overflow-x:hidden;}
+
+/* ─── HEADER ─────────────────────────────────────── */
+.hdr{background:var(--az);color:#fff;padding:calc(12px + var(--st)) 16px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.3);}
+.hdr-row{display:flex;align-items:center;gap:10px;padding-bottom:10px;}
+.hdr-logo{width:34px;height:34px;background:#fff;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hdr-logo svg{width:20px;height:20px;}
+.hdr-text{flex:1;min-width:0;}
+.hdr-title{font-size:15px;font-weight:800;letter-spacing:.1px;}
+.hdr-sub{font-size:10.5px;opacity:.72;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hdr-filial{background:var(--az2);border:1.5px solid rgba(255,255,255,.18);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:800;flex-shrink:0;letter-spacing:.3px;}
+
+/* Progress */
+.prog{padding:0 16px 10px;}
+.prog-bar{height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--az3);border-radius:3px;transition:width .5s ease;}
+.prog-meta{display:flex;justify-content:space-between;margin-top:3px;}
+.prog-lbl{font-size:10px;opacity:.72;}
+
+/* ─── UPLOAD SCREEN ──────────────────────────────── */
+#screen-upload{display:flex;flex-direction:column;align-items:center;padding:20px 16px 100px;min-height:100dvh;}
+
+.aqm-brand{margin:24px 0 20px;text-align:center;}
+.aqm-brand-logo{width:56px;height:56px;background:#fff;border-radius:16px;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;}
+.aqm-brand-logo svg{width:34px;height:34px;}
+.aqm-brand h2{font-size:18px;font-weight:900;color:var(--az2);}
+.aqm-brand p{font-size:13px;color:var(--tx2);margin-top:4px;}
+
+
+
+/* Upload card */
+.up-card{background:var(--wh);border-radius:var(--r);padding:20px;box-shadow:var(--sh);}
+.up-card + .up-card{margin-top:12px;}
+
+/* Drop zone */
+.dropzone{border:2.5px dashed var(--az3);border-radius:var(--rs);padding:22px 16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.dropzone:hover,.dropzone.drag{border-color:var(--az);background:var(--az4);}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.dropzone-icon{font-size:28px;margin-bottom:6px;}
+.dropzone-lbl{font-size:14px;font-weight:700;color:var(--az);}
+.dropzone-sub{font-size:11px;color:var(--tx3);margin-top:3px;}
+
+.up-hint{font-size:11px;color:var(--tx3);text-align:center;margin-top:10px;line-height:1.5;}
+
+
+
+
+.btn-az{background:var(--az);color:#fff;}
+.btn-az:active{opacity:.82;}
+
+.btn-bd:active{opacity:.8;}
+
+
+
+/* ─── MAIN PANEL ─────────────────────────────────── */
+#screen-main{display:none;padding-bottom:calc(76px + var(--sb));}
+
+/* Toolbar */
+.toolbar{padding:10px 12px 0;display:flex;gap:8px;}
+.search{flex:1;position:relative;}
+.search input{width:100%;border:1.5px solid var(--bd);border-radius:var(--rs);padding:9px 12px 9px 34px;font-size:14px;background:var(--wh);outline:none;color:var(--tx);}
+.search input:focus{border-color:var(--az);}
+.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--tx3);}
+.btn-filtro{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);padding:9px 12px;font-size:12px;font-weight:700;color:var(--tx2);cursor:pointer;white-space:nowrap;}
+.btn-filtro.on{border-color:var(--az);color:var(--az);background:var(--az4);}
+
+/* Stat chips */
+.chips{display:flex;gap:7px;padding:10px 12px 0;overflow-x:auto;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{font-size:11px;font-weight:700;border-radius:20px;padding:5px 11px;border:1.5px solid;white-space:nowrap;flex-shrink:0;cursor:default;}
+.chip-ok{color:var(--vd);background:var(--vd2);border-color:var(--vd3);}
+.chip-pend{color:var(--az);background:var(--az4);border-color:var(--az3);}
+.chip-div{color:var(--vm);background:var(--vm2);border-color:var(--vm3);}
+.chip-andam{color:var(--am);background:var(--am2);border-color:var(--am3);}
+
+/* List */
+.list{padding:10px 12px;}
+.grupo{margin-bottom:8px;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
+.ghdr{background:var(--az2);color:#93c5fd;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.ghdr-r{display:flex;align-items:center;gap:7px;}
+.g-cnt{background:rgba(255,255,255,.13);border-radius:20px;padding:2px 8px;font-size:10px;}
+.g-arr{font-size:10px;transition:transform .2s;}
+.grupo.fechado .g-arr{transform:rotate(-90deg);}
+.grupo.fechado .gbody{display:none;}
+.gbody{background:var(--wh);}
+
+/* Item card */
+.item{border-bottom:1px solid #f0f4f8;position:relative;}
+.item:last-child{border-bottom:none;}
+/* Status stripe */
+.item-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--bd);}
+.item.st-ok .item-stripe{background:var(--vd);}
+.item.st-dado .item-stripe{background:var(--az3);}
+.item.st-div .item-stripe{background:var(--vm);}
+
+.item-row{display:flex;align-items:stretch;cursor:pointer;padding-left:4px;}
+.item-row:active{background:#f8fafc;}
+.item-body{flex:1;padding:10px 12px 9px;min-width:0;}
+
+/* Code+name always visible */
+.item-cod{font-size:9px;font-family:'SF Mono','Fira Mono',monospace;font-weight:800;color:var(--az);letter-spacing:.6px;background:var(--az4);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:3px;}
+.item-nome{font-size:13px;font-weight:700;color:var(--tx);line-height:1.28;word-break:break-word;}
+.item-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center;}
+.pill{font-size:10px;font-weight:700;border-radius:5px;padding:2px 7px;border:1px solid;}
+.p-sist{color:#1D4ED8;background:#EFF6FF;border-color:#BFDBFE;}
+.p-cont{color:var(--vd);background:var(--vd2);border-color:var(--vd3);}
+.p-pos{color:var(--vd);background:var(--vd2);border-color:var(--vd3);}
+.p-neg{color:var(--vm);background:var(--vm2);border-color:var(--vm3);}
+.p-zero{color:var(--tx2);background:#f8fafc;border-color:var(--bd);}
+.p-andam{color:var(--am);background:var(--am2);border-color:var(--am3);}
+
+.item-obs-prev{font-size:10px;color:var(--tx3);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic;}
+.item-chev{display:flex;align-items:center;padding:0 14px;color:var(--tx3);flex-shrink:0;}
+.item-chev .chev{font-size:16px;transition:transform .2s;display:inline-block;}
+.item.aberto .chev{transform:rotate(90deg);}
+
+/* Detail */
+.item-det{display:none;background:#FAFBFE;border-top:1px solid #eef2f8;padding:14px 12px 12px;}
+.item.aberto .item-det{display:block;}
+.det-sec{margin-bottom:14px;}
+.det-sec:last-child{margin-bottom:0;}
+.det-lbl{font-size:9.5px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+
+/* Entradas */
+.entradas{display:flex;flex-direction:column;gap:5px;}
+.e-row{display:flex;align-items:center;gap:6px;}
+.e-num{font-size:10px;font-weight:800;color:var(--tx3);width:18px;text-align:right;flex-shrink:0;}
+.e-inp{flex:1;border:2px solid var(--bd);border-radius:8px;padding:11px 10px;font-size:20px;font-weight:900;text-align:center;outline:none;color:var(--tx);-webkit-appearance:none;background:var(--wh);min-width:0;}
+.e-inp:focus{border-color:var(--az);box-shadow:0 0 0 3px rgba(13,71,161,.09);}
+.e-del{background:var(--vm2);border:1.5px solid var(--vm3);border-radius:7px;padding:11px 13px;color:var(--vm);font-size:13px;font-weight:800;cursor:pointer;flex-shrink:0;}
+.e-del:active{opacity:.7;}
+.btn-add-e{background:var(--az4);border:2px dashed #BFDBFE;border-radius:8px;padding:10px;font-size:12px;font-weight:800;color:var(--az);cursor:pointer;width:100%;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-add-e:active{background:#DBEAFE;}
+
+/* Soma */
+.soma-box{display:flex;align-items:center;justify-content:space-between;background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 14px;margin-top:8px;}
+.soma-lbl{font-size:11px;color:var(--tx2);font-weight:600;}
+.soma-r{display:flex;align-items:center;gap:10px;}
+.soma-num{font-size:24px;font-weight:900;color:var(--az);letter-spacing:-.5px;}
+.diff-tag{font-size:12px;font-weight:800;border-radius:5px;padding:3px 8px;border:1px solid;}
+
+/* Obs */
+.obs-ta{width:100%;border:2px solid var(--bd);border-radius:var(--rs);padding:10px 12px;font-size:13px;font-family:inherit;resize:vertical;min-height:58px;outline:none;color:var(--tx);background:var(--wh);}
+.obs-ta:focus{border-color:var(--az);}
+
+/* Toggle */
+.tog-row{display:flex;align-items:center;gap:10px;background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);padding:11px 14px;}
+.tog-lbl{font-size:13px;font-weight:700;color:var(--tx);flex:1;cursor:pointer;}
+.tog{position:relative;width:48px;height:27px;flex-shrink:0;}
+.tog input{opacity:0;width:0;height:0;position:absolute;}
+.tog-sl{position:absolute;inset:0;background:#d1d5db;border-radius:14px;cursor:pointer;transition:background .2s;}
+.tog-sl:before{content:'';position:absolute;width:21px;height:21px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.25);}
+.tog input:checked~.tog-sl{background:var(--vd);}
+.tog input:checked~.tog-sl:before{transform:translateX(21px);}
+
+/* Bottom bar */
+.btmbar{position:fixed;bottom:0;left:0;right:0;background:var(--wh);border-top:1.5px solid var(--bd);padding:10px 12px calc(10px + var(--sb));display:flex;gap:8px;z-index:100;box-shadow:0 -2px 14px rgba(0,0,0,.08);}
+.btn-nova-c{background:var(--vm2);color:var(--vm);border:1.5px solid var(--vm3);border-radius:var(--rs);padding:12px 14px;font-size:13px;font-weight:800;cursor:pointer;}
+.btn-nova-c:active{opacity:.8;}
+.btn-pdf{flex:1;background:var(--az);color:#fff;border:none;border-radius:var(--rs);padding:12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-pdf:active{opacity:.85;}
+
+/* ─── MODALS ─────────────────────────────────────── */
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;align-items:flex-end;justify-content:center;}
+.mbg.show{display:flex;}
+.modal{background:var(--wh);border-radius:20px 20px 0 0;padding:16px 16px calc(20px + var(--sb));width:100%;max-width:520px;max-height:92dvh;overflow-y:auto;}
+.mhandle{width:36px;height:4px;background:var(--bd);border-radius:2px;margin:0 auto 14px;}
+.modal h3{font-size:16px;font-weight:800;color:var(--az2);margin-bottom:14px;}
+.mfield{margin-bottom:12px;}
+.mfield label{font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;}
+.mfield input,.mfield select{width:100%;border:2px solid var(--bd);border-radius:var(--rs);padding:11px 14px;font-size:15px;font-weight:600;outline:none;color:var(--tx);background:var(--wh);}
+.mfield input:focus,.mfield select:focus{border-color:var(--az);}
+.mbtns{display:flex;gap:8px;margin-top:8px;}
+.mbtns button{flex:1;border:none;border-radius:var(--rs);padding:13px;font-size:14px;font-weight:800;cursor:pointer;}
+.mbtn-ok{background:var(--az);color:#fff;}
+.mbtn-ok:active{opacity:.85;}
+.mbtn-cancel{background:#f1f5f9;color:var(--tx2);}
+
+/* Pending list */
+.pend-list{max-height:42dvh;overflow-y:auto;margin:8px 0;}
+.pend-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #f1f5f9;align-items:flex-start;}
+.pend-item:last-child{border-bottom:none;}
+.pend-cod{font-size:10px;font-family:monospace;font-weight:800;color:var(--az);background:var(--az4);border-radius:4px;padding:1px 6px;flex-shrink:0;margin-top:1px;}
+.pend-info{}
+.pend-nome{font-size:12px;font-weight:700;color:var(--tx);line-height:1.3;}
+.pend-sub{font-size:10px;color:var(--tx3);margin-top:1px;}
+.pend-summary{background:var(--vm2);border:1px solid var(--vm3);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--vm);font-weight:700;}
+
+/* Toast */
+.toast{position:fixed;bottom:calc(82px + var(--sb));left:50%;transform:translateX(-50%) translateY(8px);background:#1e293b;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);text-align:center;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.ok{background:var(--vd);}
+.toast.err{background:var(--vm);}
+
+/* Empty */
+.empty{text-align:center;padding:44px 24px;color:var(--tx3);}
+.empty-ico{font-size:44px;margin-bottom:10px;opacity:.5;}
+.empty p{font-size:14px;font-weight:600;}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ────────────────────────────────────── -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div class="hdr-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0D47A1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+      </svg>
+    </div>
+    <div class="hdr-text">
+      <div class="hdr-title">Inventário de Estoque</div>
+      <div class="hdr-sub" id="hdr-sub">Agroquima · Carregue o relatório XLS</div>
+    </div>
+    <div class="hdr-filial" id="hdr-filial">AQM</div>
+  </div>
+  <div class="prog" id="prog-wrap" style="display:none;">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="prog-meta">
+      <span class="prog-lbl" id="prog-txt">0 conferidos</span>
+      <span class="prog-lbl" id="prog-pct">0%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── UPLOAD SCREEN ─────────────────────────────── -->
+<div id="screen-upload">
+  <div class="aqm-brand">
+    <div class="aqm-brand-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0D47A1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+      </svg>
+    </div>
+    <h2>Contagem de Estoque</h2>
+    <p>Carregue o relatório exportado do sistema</p>
+  </div>
+
+  <div class="up-card" style="max-width:420px;width:100%;">
+    <div class="dropzone" id="drop-zone">
+      <input type="file" id="file-input" accept=".xls,.xlsx" onchange="handleFile(this.files[0])">
+      <div class="dropzone-icon">📊</div>
+      <div class="dropzone-lbl">Selecionar arquivo XLS / XLSX</div>
+      <div class="dropzone-sub">Toque para abrir · Arraste aqui</div>
+    </div>
+    <div class="up-hint">Relatório <strong>GERAINVENTARIOPORFILIAL</strong> exportado do intranet<br>Funciona em celular, tablet e notebook</div>
+  </div>
+</div><!-- /screen-upload -->
+
+<!-- ── MAIN PANEL ─────────────────────────────────── -->
+<div id="screen-main">
+  <div class="toolbar">
+    <div class="search">
+      <span class="search-ico">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input type="text" id="busca" placeholder="Buscar código ou nome…" oninput="filtrar()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <button class="btn-filtro" id="btn-pend" onclick="toggleFiltro()">Pendentes</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="list" id="lista"></div>
+</div>
+
+<!-- ── BOTTOM BAR ─────────────────────────────────── -->
+<div class="btmbar" id="btmbar" style="display:none;">
+  <button class="btn-nova-c" onclick="novaContagem()" title="Nova contagem">↩ Nova</button>
+  <button class="btn-pdf" onclick="tentarPDF()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Gerar PDF do Inventário
+  </button>
+</div>
+
+<!-- ── MODAL: Inventário info ─────────────────────── -->
+<div class="mbg" id="modal-inv">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>📋 Dados do Inventário</h3>
+    <div class="mfield"><label>Número do Inventário</label><input type="text" id="m-num" placeholder="Ex: 5764" inputmode="numeric"></div>
+    <div class="mfield"><label>Data</label><input type="date" id="m-data"></div>
+    <div class="mfield"><label>Contagem</label><input type="text" id="m-cont" value="Contagem 1"></div>
+    <div class="mfield"><label>Responsável</label><input type="text" id="m-resp" placeholder="Nome completo"></div>
+    <div class="mbtns">
+      <button class="mbtn-cancel" onclick="fecharModal('modal-inv')">Cancelar</button>
+      <button class="mbtn-ok" onclick="gerarPDF()">Gerar PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Pendentes ───────────────────────────── -->
+<div class="mbg" id="modal-pend">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>Itens Pendentes</h3>
+    <div class="pend-summary" id="pend-summary"></div>
+    <div class="pend-list" id="pend-lista"></div>
+    <div class="mbtns">
+      <button class="mbtn-cancel" style="flex:1" onclick="fecharModal('modal-pend')">Fechar e continuar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+let PRODS = [];     // [{id, nome, linha, qtde_sistema}]
+let ST    = {};     // {id: {entradas:[], obs:'', conferido:false}}
+let filtroPend = false;
+let query = '';
+let filialInfo = {tag:'', nome:''};
+
+// ═══════════════════════════════════════════════════
+// UPLOAD — MOBILE
+// ═══════════════════════════════════════════════════
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', e=>{e.preventDefault();dropZone.classList.add('drag');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag');handleFile(e.dataTransfer.files[0]);});
+
+function handleFile(file){
+  if(!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(!['xls','xlsx'].includes(ext)){toast('Use arquivos .xls ou .xlsx','err');return;}
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const wb = XLSX.read(e.target.result,{type:'array'});
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(ws,{defval:''});
+      processarRows(rows, file.name);
+    }catch(err){toast('Erro ao ler arquivo: '+err.message,'err');}
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+
+
+// ═══════════════════════════════════════════════════
+// PROCESS ROWS (from XLSX)
+// ═══════════════════════════════════════════════════
+function processarRows(rows, filename){
+  const sample = rows[0]||{};
+  const keys = Object.keys(sample);
+  // Match columns by exact priority — ID must not match NOME
+  const findExact = (candidates) => {
+    for(const c of candidates){
+      const found=keys.find(k=>k.toUpperCase().replace(/[_ ]/g,'')=== c.toUpperCase().replace(/[_ ]/g,''));
+      if(found) return found;
+    }
+    // fallback: contains match
+    for(const c of candidates){
+      const found=keys.find(k=>k.toUpperCase().replace(/[_ ]/g,'').includes(c.toUpperCase().replace(/[_ ]/g,'')));
+      if(found) return found;
+    }
+    return '';
+  };
+  const cNome = findExact(['NOME','PRODUTO','DESCRICAO','DESCRIPTION']);
+  const cId   = findExact(['ID_PRODUTO','IDPRODUTO','ID PRODUTO','CODIGO','COD']).replace(cNome,'') || 
+                keys.find(k=>k!==cNome && /^id/i.test(k)) || '';
+  const cLinha= findExact(['LINHA','GRUPO','CATEGORIA','CATEGORY']);
+  const cQtde = findExact(['QTDE_TOTAL','QTDETOTAL','QTDE TOTAL','QUANTIDADE TOTAL','TOTAL']);
+
+  if(!cNome){toast('Coluna NOME não encontrada no arquivo','err');return;}
+
+  const prods=[];
+  rows.forEach(r=>{
+    const q=parseFloat(r[cQtde])||0;
+    if(q<=0) return;
+    const nFull=String(r[cNome]||'').trim();
+    if(!nFull) return;
+
+    // ID: from dedicated column, or extract leading digits from nome field
+    let id = cId ? String(r[cId]||'').trim().replace(/\.0+$/,'') : '';
+    if(!id){
+      // Try to extract from nome pattern "12345 - NAME"
+      const m=nFull.match(/^(\d+)\s*-\s*/);
+      if(m) id=m[1];
+    }
+
+    // Display name: strip leading "NNNN - " if present in nome field
+    // Works whether nome column has "12345 - PRODUCT" or just "PRODUCT"
+    let nome=nFull.replace(/^\d+\s*-\s*/,'').trim();
+    if(!nome || nome===id) nome=nFull; // safety fallback — never show empty or just code
+
+    const linha=String(r[cLinha]||'SEM LINHA').trim();
+    prods.push({id, nome, linha, qtde_sistema:q});
+  });
+
+  if(!prods.length){toast('Nenhum produto com estoque encontrado','err');return;}
+
+  // Detect filial from filename digits
+  const fm=filename.match(/(\d{2,3})/);
+  const ftag=fm?'Filial '+fm[1]:filename.replace(/\.[^.]+$/,'').slice(0,14).toUpperCase();
+  ativarPainel(prods, ftag);
+}
+
+function ativarPainel(prods, ftag){
+  // Sort alpha by nome
+  prods.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
+  PRODS=prods; ST={};
+  filialInfo.tag=ftag;
+  document.getElementById('hdr-sub').textContent=`Agroquima · ${ftag} · ${prods.length} produtos`;
+  document.getElementById('hdr-filial').textContent=ftag.replace('Filial ','F').slice(0,8);
+  document.getElementById('screen-upload').style.display='none';
+  document.getElementById('screen-main').style.display='block';
+  document.getElementById('btmbar').style.display='flex';
+  document.getElementById('prog-wrap').style.display='block';
+  renderChips(); renderLista(); atualizarProg();
+  toast(`${prods.length} produtos carregados ✓`,'ok');
+}
+
+// ═══════════════════════════════════════════════════
+// STATE HELPERS
+// ═══════════════════════════════════════════════════
+function gE(id){if(!ST[id])ST[id]={entradas:[],obs:'',conferido:false};return ST[id];}
+function soma(id){
+  const e=gE(id);
+  if(!e.entradas.length) return null;
+  return e.entradas.reduce((a,b)=>a+(parseFloat(b)||0),0);
+}
+function fmt(n){
+  if(n==null) return '—';
+  const abs=Math.abs(n);
+  if(n%1===0) return n.toLocaleString('pt-BR');
+  return n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:3});
+}
+function itemStatus(p){
+  const e=gE(p.id);
+  if(e.conferido) return 'ok';
+  const s=soma(p.id);
+  if(s!==null && s!==p.qtde_sistema) return 'div';
+  if(s!==null) return 'dado';
+  return '';
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function renderChips(){
+  const conf=PRODS.filter(p=>gE(p.id).conferido).length;
+  const pend=PRODS.length-conf;
+  const andam=PRODS.filter(p=>soma(p.id)!==null&&!gE(p.id).conferido).length;
+  const div=PRODS.filter(p=>{const s=soma(p.id);return s!==null&&s!==p.qtde_sistema;}).length;
+  document.getElementById('chips').innerHTML=`
+    <div class="chip chip-ok">✓ ${conf} conferidos</div>
+    <div class="chip chip-pend">◌ ${pend} pendentes</div>
+    ${andam?`<div class="chip chip-andam">✎ ${andam} em andamento</div>`:''}
+    ${div?`<div class="chip chip-div">⚠ ${div} divergências</div>`:''}`;
+}
+
+function renderLista(){
+  const q=query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const lista=PRODS.filter(p=>{
+    if(filtroPend&&gE(p.id).conferido) return false;
+    if(!q) return true;
+    const h=(p.id+' '+p.nome).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    return h.includes(q);
+  });
+  const cont=document.getElementById('lista');
+  if(!lista.length){
+    cont.innerHTML=`<div class="empty"><div class="empty-ico">🔍</div><p>Nenhum produto encontrado</p></div>`;
+    return;
+  }
+  const linhas={};
+  lista.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
+  cont.innerHTML=Object.entries(linhas).map(([linha,prods])=>{
+    const c=prods.filter(p=>gE(p.id).conferido).length;
+    const lid=linha.replace(/[^a-zA-Z0-9]/g,'_');
+    return `<div class="grupo" id="g-${lid}">
+      <div class="ghdr" onclick="toggleGrupo('${lid}')">
+        <span>${linha.replace(/^LINHA\s*/i,'')}</span>
+        <div class="ghdr-r"><span class="g-cnt">${c}/${prods.length}</span><span class="g-arr">▾</span></div>
+      </div>
+      <div class="gbody">${prods.map(p=>renderItem(p)).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderItem(p){
+  const e=gE(p.id);
+  const s=soma(p.id);
+  const st=itemStatus(p);
+  // Pills
+  let pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
+  if(s!==null){
+    pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
+    const d=s-p.qtde_sistema;
+    pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
+  } else if(e.entradas.length>0){
+    pills+=`<span class="pill p-andam">Em andamento</span>`;
+  }
+  const obsPrev=e.obs?`<div class="item-obs-prev">💬 ${e.obs}</div>`:'';
+  // Entradas
+  const entHtml=e.entradas.map((v,i)=>`
+    <div class="e-row" id="er-${p.id}-${i}">
+      <span class="e-num">${i+1}</span>
+      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
+        oninput="upEntrada('${p.id}',${i},this.value)" onfocus="this.select()">
+      <button class="e-del" onclick="delEntrada('${p.id}',${i});event.stopPropagation()">✕</button>
+    </div>`).join('');
+  // Soma box
+  let somaHtml='';
+  if(s!==null){
+    const d=s-p.qtde_sistema;
+    const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
+    const sign=d>0?'+':'';
+    // Show breakdown if multiple entries
+    const breakdown=e.entradas.length>1
+      ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${e.entradas.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
+    somaHtml=`<div class="soma-box">
+      <div class="soma-lbl">Total contado<br>${breakdown}</div>
+      <div class="soma-r">
+        <span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span>
+        <span class="soma-num">${fmt(s)}</span>
+      </div>
+    </div>`;
+  }
+  return `
+  <div class="item st-${st}" id="item-${p.id}">
+    <div class="item-stripe"></div>
+    <div class="item-row" onclick="toggleItem('${p.id}')">
+      <div class="item-body">
+        <span class="item-cod">${p.id}</span>
+        <div class="item-nome">${p.nome}</div>
+        <div class="item-pills">${pills}</div>
+        ${obsPrev}
+      </div>
+      <div class="item-chev"><span class="chev">›</span></div>
+    </div>
+    <div class="item-det">
+      <div class="det-sec">
+        <div class="det-lbl">Contagens</div>
+        <div class="entradas" id="ent-${p.id}">${entHtml}</div>
+        <button class="btn-add-e" onclick="addEntrada('${p.id}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Adicionar contagem
+        </button>
+        ${somaHtml}
+      </div>
+      <div class="det-sec">
+        <div class="det-lbl">Observações</div>
+        <textarea class="obs-ta" id="obs-${p.id}" placeholder="Anotações, lote, localização…" oninput="upObs('${p.id}',this.value)">${e.obs}</textarea>
+      </div>
+      <div class="det-sec">
+        <div class="tog-row">
+          <label class="tog-lbl" for="conf-${p.id}">Marcar como conferido</label>
+          <label class="tog">
+            <input type="checkbox" id="conf-${p.id}" ${e.conferido?'checked':''} onchange="toggleConf('${p.id}',this.checked)">
+            <span class="tog-sl"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════════════════
+function toggleItem(id){
+  const el=document.getElementById('item-'+id);
+  if(!el) return;
+  const isOpen=el.classList.contains('aberto');
+  document.querySelectorAll('.item.aberto').forEach(x=>x.classList.remove('aberto'));
+  if(!isOpen){
+    el.classList.add('aberto');
+    if(!gE(id).entradas.length) addEntrada(id);
+    setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
+  }
+}
+function toggleGrupo(lid){
+  const el=document.getElementById('g-'+lid);
+  if(el) el.classList.toggle('fechado');
+}
+function addEntrada(id){
+  gE(id).entradas.push('');
+  refreshEntradas(id); refreshSoma(id);
+  setTimeout(()=>{
+    const ins=document.querySelectorAll(`#ent-${id} .e-inp`);
+    if(ins.length) ins[ins.length-1].focus();
+  },40);
+}
+function delEntrada(id,idx){
+  gE(id).entradas.splice(idx,1);
+  refreshEntradas(id); refreshSoma(id); refreshPills(id);
+  renderChips(); atualizarProg();
+}
+function upEntrada(id,idx,val){
+  gE(id).entradas[idx]=val;
+  refreshSoma(id); refreshPills(id);
+  renderChips(); atualizarProg();
+  // Update status stripe
+  const el=document.getElementById('item-'+id);
+  if(el){el.className=el.className.replace(/st-\w*/g,'').trim()+' st-'+itemStatus(PRODS.find(p=>p.id===id)||{id});el.classList.remove('st-undefined');}
+}
+function upObs(id,val){
+  gE(id).obs=val;
+  const prev=document.querySelector(`#item-${id} .item-obs-prev`);
+  if(val){
+    const txt='💬 '+val;
+    if(prev) prev.textContent=txt;
+    else{
+      const pills=document.querySelector(`#item-${id} .item-pills`);
+      if(pills){const d=document.createElement('div');d.className='item-obs-prev';d.textContent=txt;pills.after(d);}
+    }
+  } else if(prev) prev.remove();
+}
+function toggleConf(id,checked){
+  gE(id).conferido=checked;
+  const el=document.getElementById('item-'+id);
+  if(el){
+    el.className=el.className.replace(/st-\w*/g,'').trim();
+    el.classList.add('st-'+(checked?'ok':itemStatus(PRODS.find(p=>p.id===id)||{})));
+  }
+  renderChips(); atualizarProg();
+  if(checked) toast('Conferido ✓','ok');
+}
+
+// Partial refresh helpers
+function refreshEntradas(id){
+  const cont=document.getElementById('ent-'+id);
+  if(!cont) return;
+  const e=gE(id);
+  cont.innerHTML=e.entradas.map((v,i)=>`
+    <div class="e-row" id="er-${id}-${i}">
+      <span class="e-num">${i+1}</span>
+      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
+        oninput="upEntrada('${id}',${i},this.value)" onfocus="this.select()">
+      <button class="e-del" onclick="delEntrada('${id}',${i});event.stopPropagation()">✕</button>
+    </div>`).join('');
+}
+function refreshSoma(id){
+  const p=PRODS.find(x=>x.id===id); if(!p) return;
+  const s=soma(id);
+  const det=document.querySelector(`#item-${id} .item-det`); if(!det) return;
+  let box=det.querySelector('.soma-box');
+  if(s!==null){
+    const e=gE(id);
+    const d=s-p.qtde_sistema;
+    const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
+    const sign=d>0?'+':'';
+    const breakdown=e.entradas.length>1
+      ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${e.entradas.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
+    const html=`<div class="soma-box"><div class="soma-lbl">Total contado<br>${breakdown}</div><div class="soma-r"><span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span><span class="soma-num">${fmt(s)}</span></div></div>`;
+    if(box) box.outerHTML=html; else{const a=det.querySelector('.btn-add-e');if(a)a.insertAdjacentHTML('afterend',html);}
+  } else if(box) box.remove();
+}
+function refreshPills(id){
+  const p=PRODS.find(x=>x.id===id); if(!p) return;
+  const s=soma(id);
+  const pl=document.querySelector(`#item-${id} .item-pills`); if(!pl) return;
+  let pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
+  if(s!==null){
+    pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
+    const d=s-p.qtde_sistema;
+    pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
+  } else if(gE(id).entradas.length>0){
+    pills+=`<span class="pill p-andam">Em andamento</span>`;
+  }
+  pl.innerHTML=pills;
+}
+
+// ═══════════════════════════════════════════════════
+// FILTERS + PROGRESS
+// ═══════════════════════════════════════════════════
+function filtrar(){
+  query=document.getElementById('busca').value;
+  renderLista();
+}
+function toggleFiltro(){
+  filtroPend=!filtroPend;
+  const btn=document.getElementById('btn-pend');
+  btn.classList.toggle('on',filtroPend);
+  btn.textContent=filtroPend?'✕ Pendentes':'Pendentes';
+  renderLista();
+}
+function atualizarProg(){
+  const tot=PRODS.length; if(!tot) return;
+  const c=PRODS.filter(p=>gE(p.id).conferido).length;
+  const pct=Math.round(c/tot*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-txt').textContent=`${c} de ${tot} conferidos`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+
+// ═══════════════════════════════════════════════════
+// PDF
+// ═══════════════════════════════════════════════════
+function tentarPDF(){
+  const pend=PRODS.filter(p=>!gE(p.id).conferido);
+  if(pend.length){
+    const byLinha={};
+    pend.forEach(p=>{if(!byLinha[p.linha])byLinha[p.linha]=[];byLinha[p.linha].push(p);});
+    document.getElementById('pend-summary').textContent=
+      `${pend.length} item${pend.length>1?'s':''} sem conferência — conclua antes de gerar o PDF.`;
+    document.getElementById('pend-lista').innerHTML=Object.entries(byLinha).map(([l,ps])=>
+      `<div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;padding:8px 0 4px;">${l.replace(/^LINHA\s*/i,'')}</div>`+
+      ps.map(p=>`<div class="pend-item"><span class="pend-cod">${p.id}</span><div class="pend-info"><div class="pend-nome">${p.nome}</div><div class="pend-sub">Sistema: ${fmt(p.qtde_sistema)}</div></div></div>`).join('')
+    ).join('');
+    abrirModal('modal-pend'); return;
+  }
+  document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
+  abrirModal('modal-inv');
+}
+
+function gerarPDF(){
+  const num=document.getElementById('m-num').value.trim()||'—';
+  const dv=document.getElementById('m-data').value;
+  const cont=document.getElementById('m-cont').value.trim()||'Contagem 1';
+  const resp=document.getElementById('m-resp').value.trim();
+  fecharModal('modal-inv');
+
+  let dFmt='—';
+  if(dv){
+    const d=new Date(dv+'T12:00:00'),now=new Date();
+    dFmt=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} — ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  }
+
+  const linhas={};
+  PRODS.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
+
+  const conf=PRODS.filter(p=>gE(p.id).conferido).length;
+  const diverg=PRODS.filter(p=>{const s=soma(p.id);return s!==null&&s!==p.qtde_sistema;}).length;
+
+  let rows='';
+  Object.entries(linhas).forEach(([l,ps])=>{
+    rows+=`<tr class="lhdr"><td colspan="5">${l}</td></tr>`;
+    ps.forEach(p=>{
+      const e=gE(p.id);
+      const s=soma(p.id);
+      const d=s!==null?s-p.qtde_sistema:null;
+      const dStr=d!==null?(d>0?'+'+fmt(d):fmt(d)):'';
+      const dCls=d===null?'':d>0?'pos':d<0?'neg':'zer';
+      // Multi-entry breakdown
+      const break2=e.entradas.length>1?`<span class="ebd">${e.entradas.map((v,i)=>`C${i+1}:${fmt(parseFloat(v)||0)}`).join(' ')}</span>`:'';
+      rows+=`<tr>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc">${fmt(p.qtde_sistema)}</td>
+        <td class="cc blue">${s!==null?fmt(s):''}${break2}</td>
+        <td class="cc ${dCls}">${dStr}</td>
+        <td class="oc">${e.obs||''}</td>
+      </tr>`;
+    });
+  });
+
+  const win=window.open('','_blank');
+  if(!win){toast('Permita pop-ups para gerar o PDF','err');return;}
+  win.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Inventário ${num} — Agroquima</title>
+<style>
+@page{size:A4 portrait;margin:10mm 13mm;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,Helvetica,sans-serif;font-size:8.5pt;color:#000;}
+.ph{border-bottom:2pt solid #0D47A1;padding-bottom:4mm;margin-bottom:4mm;display:flex;justify-content:space-between;align-items:flex-start;}
+.ph-l h1{font-size:14pt;font-weight:900;color:#0D47A1;}
+.ph-l .meta{font-size:8pt;color:#333;margin-top:1.5mm;line-height:1.7;}
+.ph-l .meta b{color:#000;}
+.ph-r{text-align:right;}
+.ph-r .inv-n{font-size:22pt;font-weight:900;color:#002B5B;line-height:1;}
+.ph-r .inv-l{font-size:7pt;color:#888;text-transform:uppercase;letter-spacing:.5px;}
+.summ{display:flex;gap:4mm;margin-bottom:4mm;flex-wrap:wrap;}
+.schip{border:1pt solid;border-radius:4pt;padding:1.5mm 3mm;font-size:7.5pt;font-weight:700;}
+.sc-ok{color:#16a34a;border-color:#86efac;background:#f0fdf4;}
+.sc-div{color:#dc2626;border-color:#fca5a5;background:#fee2e2;}
+.sc-tot{color:#1D4ED8;border-color:#BFDBFE;background:#EFF6FF;}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#0D47A1;color:#fff;}
+th{padding:2.5mm 2mm;font-size:8pt;font-weight:700;text-align:left;}
+th.c{text-align:center;}
+tr.lhdr td{background:#002B5B;color:#93c5fd;font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:2mm;border:0.3pt solid #001840;}
+tbody tr{border-bottom:0.3pt solid #eee;page-break-inside:avoid;}
+tbody tr:nth-child(even):not(.lhdr){background:#f8fafc;}
+td{padding:2mm;font-size:8pt;vertical-align:top;border:0.3pt solid #eee;}
+td.pc{font-size:8pt;}
+td.pc .cod{font-size:7pt;font-family:monospace;font-weight:800;color:#0D47A1;background:#EFF6FF;border-radius:3pt;padding:0 3pt;margin-right:2pt;}
+td.cc{text-align:center;font-weight:700;}
+td.blue{color:#0D47A1;}
+td.pos{color:#16a34a;text-align:center;font-weight:800;}
+td.neg{color:#dc2626;text-align:center;font-weight:800;}
+td.zer{color:#64748b;text-align:center;}
+td.oc{font-size:7.5pt;color:#555;font-style:italic;}
+.ebd{display:block;font-size:6.5pt;color:#888;margin-top:.5mm;}
+.sigs{display:flex;gap:8mm;margin-top:8mm;}
+.sig{flex:1;}
+.sig-line{border-top:1pt solid #0D47A1;margin-bottom:1.5mm;}
+.sig-lbl{font-size:7pt;color:#666;text-transform:uppercase;letter-spacing:.4px;}
+.sig-name{font-size:9pt;font-weight:700;margin-top:1mm;min-height:5mm;}
+.ftr{margin-top:5mm;font-size:7pt;color:#bbb;text-align:center;border-top:.3pt solid #ddd;padding-top:2mm;display:flex;justify-content:space-between;}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+</style></head><body>
+<div class="ph">
+  <div class="ph-l">
+    <h1>INVENTÁRIO DE ESTOQUE</h1>
+    <div class="meta">
+      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${cont}</b><br>
+      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${resp||'_____________________________'}
+    </div>
+  </div>
+  <div class="ph-r">
+    <div class="inv-l">Nº Inventário</div>
+    <div class="inv-n">${num}</div>
+  </div>
+</div>
+<div class="summ">
+  <div class="schip sc-tot">📦 ${PRODS.length} produtos</div>
+  <div class="schip sc-ok">✓ ${conf} conferidos</div>
+  ${diverg?`<div class="schip sc-div">⚠ ${diverg} divergências</div>`:''}
+</div>
+<table>
+<thead><tr>
+  <th style="width:40%;">CÓD · PRODUTO</th>
+  <th class="c" style="width:12%;">SISTEMA</th>
+  <th class="c" style="width:14%;">CONTADO</th>
+  <th class="c" style="width:10%;">DIFERENÇA</th>
+  <th style="width:24%;">OBSERVAÇÕES</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>
+<div class="sigs">
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela Contagem</div><div class="sig-name">${resp}</div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Aprovado por</div><div class="sig-name"></div></div>
+</div>
+<div class="ftr"><span>AGROQUIMA PRODUTOS AGROPECUÁRIOS LTDA — Inventário de Estoque</span><span>Emitido em ${dFmt}</span></div>
+</body></html>`);
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+  toast('PDF gerado! Salve ou imprima.','ok');
+}
+
+
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function novaContagem(){
+  if(!confirm('Carregar novo relatório? A contagem atual será perdida.')) return;
+  PRODS=[]; ST={};
+  document.getElementById('screen-main').style.display='none';
+  document.getElementById('btmbar').style.display='none';
+  document.getElementById('prog-wrap').style.display='none';
+  document.getElementById('screen-upload').style.display='flex';
+  document.getElementById('hdr-sub').textContent='Agroquima · Carregue o relatório XLS';
+  document.getElementById('hdr-filial').textContent='AQM';
+  document.getElementById('busca').value='';
+  document.getElementById('file-input').value='';
+  query=''; filtroPend=false;
+  document.getElementById('btn-pend').classList.remove('on');
+  document.getElementById('btn-pend').textContent='Pendentes';
+}
+function abrirModal(id){document.getElementById(id).classList.add('show');}
+function fecharModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.mbg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('show');}));
+let _tt;
+function toast(msg,type=''){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast show'+(type?' '+type:'');
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2800);
+}
+</script>
+</body>
+</html>
