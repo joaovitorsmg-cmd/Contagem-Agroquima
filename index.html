@@ -42,6 +42,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .prog-meta{display:flex;justify-content:space-between;margin-top:3px;}
 .prog-lbl{font-size:10px;opacity:.72;}
 
+/* Phase banner */
+.fase-banner{display:none;background:var(--am2);border-bottom:2px solid var(--am3);padding:8px 16px;align-items:center;justify-content:space-between;gap:8px;}
+.fase-banner-lbl{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--am);}
+.fase-banner-cnt{font-size:11px;font-weight:700;color:var(--tx2);}
+.fase-dot{width:8px;height:8px;border-radius:50%;background:var(--am);flex-shrink:0;}
+
 /* ─── UPLOAD SCREEN ──────────────────────────────── */
 #screen-upload{display:flex;flex-direction:column;align-items:center;padding:20px 16px 100px;min-height:100dvh;}
 
@@ -50,8 +56,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .aqm-brand-logo svg{width:34px;height:34px;}
 .aqm-brand h2{font-size:18px;font-weight:900;color:var(--az2);}
 .aqm-brand p{font-size:13px;color:var(--tx2);margin-top:4px;}
-
-
 
 /* Upload card */
 .up-card{background:var(--wh);border-radius:var(--r);padding:20px;box-shadow:var(--sh);}
@@ -64,18 +68,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .dropzone-icon{font-size:28px;margin-bottom:6px;}
 .dropzone-lbl{font-size:14px;font-weight:700;color:var(--az);}
 .dropzone-sub{font-size:11px;color:var(--tx3);margin-top:3px;}
-
 .up-hint{font-size:11px;color:var(--tx3);text-align:center;margin-top:10px;line-height:1.5;}
-
-
-
 
 .btn-az{background:var(--az);color:#fff;}
 .btn-az:active{opacity:.82;}
-
 .btn-bd:active{opacity:.8;}
-
-
 
 /* ─── MAIN PANEL ─────────────────────────────────── */
 #screen-main{display:none;padding-bottom:calc(76px + var(--sb));}
@@ -112,7 +109,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 /* Item card */
 .item{border-bottom:1px solid #f0f4f8;position:relative;}
 .item:last-child{border-bottom:none;}
-/* Status stripe */
 .item-stripe{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--bd);}
 .item.st-ok .item-stripe{background:var(--vd);}
 .item.st-dado .item-stripe{background:var(--az3);}
@@ -122,7 +118,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .item-row:active{background:#f8fafc;}
 .item-body{flex:1;padding:10px 12px 9px;min-width:0;}
 
-/* Code+name always visible */
 .item-cod{font-size:9px;font-family:'SF Mono','Fira Mono',monospace;font-weight:800;color:var(--az);letter-spacing:.6px;background:var(--az4);border-radius:4px;padding:1px 5px;display:inline-block;margin-bottom:3px;}
 .item-nome{font-size:13px;font-weight:700;color:var(--tx);line-height:1.28;word-break:break-word;}
 .item-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center;}
@@ -184,6 +179,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .btn-nova-c:active{opacity:.8;}
 .btn-pdf{flex:1;background:var(--az);color:#fff;border:none;border-radius:var(--rs);padding:12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
 .btn-pdf:active{opacity:.85;}
+.btn-pdf.fase2{background:var(--am);}
+.btn-pdf.fase3{background:var(--vm);}
 
 /* ─── MODALS ─────────────────────────────────────── */
 .mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;align-items:flex-end;justify-content:center;}
@@ -199,17 +196,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .mbtns button{flex:1;border:none;border-radius:var(--rs);padding:13px;font-size:14px;font-weight:800;cursor:pointer;}
 .mbtn-ok{background:var(--az);color:#fff;}
 .mbtn-ok:active{opacity:.85;}
+.mbtn-ok.am{background:var(--am);}
+.mbtn-ok.vm{background:var(--vm);}
 .mbtn-cancel{background:#f1f5f9;color:var(--tx2);}
 
-/* Pending list */
+/* Pending / divergence list */
 .pend-list{max-height:42dvh;overflow-y:auto;margin:8px 0;}
 .pend-item{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #f1f5f9;align-items:flex-start;}
 .pend-item:last-child{border-bottom:none;}
 .pend-cod{font-size:10px;font-family:monospace;font-weight:800;color:var(--az);background:var(--az4);border-radius:4px;padding:1px 6px;flex-shrink:0;margin-top:1px;}
-.pend-info{}
 .pend-nome{font-size:12px;font-weight:700;color:var(--tx);line-height:1.3;}
 .pend-sub{font-size:10px;color:var(--tx3);margin-top:1px;}
-.pend-summary{background:var(--vm2);border:1px solid var(--vm3);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--vm);font-weight:700;}
+.pend-summary{border:1px solid;border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;font-weight:700;}
+.pend-summary.err{background:var(--vm2);border-color:var(--vm3);color:var(--vm);}
+.pend-summary.warn{background:var(--am2);border-color:var(--am3);color:var(--am);}
 
 /* Toast */
 .toast{position:fixed;bottom:calc(82px + var(--sb));left:50%;transform:translateX(-50%) translateY(8px);background:#1e293b;color:#fff;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:300;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;max-width:calc(100vw - 32px);text-align:center;}
@@ -221,6 +221,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .empty{text-align:center;padding:44px 24px;color:var(--tx3);}
 .empty-ico{font-size:44px;margin-bottom:10px;opacity:.5;}
 .empty p{font-size:14px;font-weight:600;}
+
+/* Blind-count hint (C2/C3) */
+.blind-hint{background:var(--am2);border:1px solid var(--am3);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--am);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
 </style>
 </head>
 <body>
@@ -246,6 +249,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
       <span class="prog-lbl" id="prog-pct">0%</span>
     </div>
   </div>
+  <div class="fase-banner" id="fase-banner">
+    <div class="fase-banner-lbl">
+      <div class="fase-dot"></div>
+      <span id="fase-lbl">2ª Contagem — Reconferência</span>
+    </div>
+    <span class="fase-banner-cnt" id="fase-n"></span>
+  </div>
 </div>
 
 <!-- ── UPLOAD SCREEN ─────────────────────────────── -->
@@ -269,7 +279,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
     </div>
     <div class="up-hint">Relatório <strong>GERAINVENTARIOPORFILIAL</strong> exportado do intranet<br>Funciona em celular, tablet e notebook</div>
   </div>
-</div><!-- /screen-upload -->
+</div>
 
 <!-- ── MAIN PANEL ─────────────────────────────────── -->
 <div id="screen-main">
@@ -289,9 +299,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 <!-- ── BOTTOM BAR ─────────────────────────────────── -->
 <div class="btmbar" id="btmbar" style="display:none;">
   <button class="btn-nova-c" onclick="novaContagem()" title="Nova contagem">↩ Nova</button>
-  <button class="btn-pdf" onclick="tentarPDF()">
+  <button class="btn-pdf" id="btn-pdf" onclick="tentarFecharFase()">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-    Gerar PDF do Inventário
+    <span id="btn-pdf-txt">Fechar Inventário</span>
   </button>
 </div>
 
@@ -299,27 +309,59 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 <div class="mbg" id="modal-inv">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3>📋 Dados do Inventário</h3>
+    <h3 id="m-titulo">📋 Dados do Inventário</h3>
     <div class="mfield"><label>Número do Inventário</label><input type="text" id="m-num" placeholder="Ex: 5764" inputmode="numeric"></div>
     <div class="mfield"><label>Data</label><input type="date" id="m-data"></div>
-    <div class="mfield"><label>Contagem</label><input type="text" id="m-cont" value="Contagem 1"></div>
+    <div class="mfield"><label>Contagem</label><input type="text" id="m-cont" value="1ª Contagem"></div>
     <div class="mfield"><label>Responsável</label><input type="text" id="m-resp" placeholder="Nome completo"></div>
     <div class="mbtns">
       <button class="mbtn-cancel" onclick="fecharModal('modal-inv')">Cancelar</button>
-      <button class="mbtn-ok" onclick="gerarPDF()">Gerar PDF</button>
+      <button class="mbtn-ok" id="m-btn-ok" onclick="confirmarGerarPDF()">Gerar PDF</button>
     </div>
   </div>
 </div>
 
-<!-- ── MODAL: Pendentes ───────────────────────────── -->
+<!-- ── MODAL: Pendentes (C1) ───────────────────────── -->
 <div class="mbg" id="modal-pend">
   <div class="modal">
     <div class="mhandle"></div>
     <h3>Itens Pendentes</h3>
-    <div class="pend-summary" id="pend-summary"></div>
+    <div class="pend-summary err" id="pend-summary"></div>
     <div class="pend-list" id="pend-lista"></div>
     <div class="mbtns">
       <button class="mbtn-cancel" style="flex:1" onclick="fecharModal('modal-pend')">Fechar e continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Divergências C1 → C2 ───────────────── -->
+<div class="mbg" id="modal-div">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>⚠ Divergências Encontradas</h3>
+    <div class="pend-summary warn" id="div-summary"></div>
+    <div class="pend-list" id="div-lista"></div>
+    <div class="mbtns" style="flex-direction:column;">
+      <button class="mbtn-ok am" onclick="confirmarFechamentoComDiv()">
+        Fechar com Divergência · Iniciar 2ª Contagem
+      </button>
+      <button class="mbtn-cancel" onclick="fecharModal('modal-div')">Cancelar — Continuar Revisando</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Divergências C2 → C3 ───────────────── -->
+<div class="mbg" id="modal-div3">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <h3>⚠ Ainda há Divergências</h3>
+    <div class="pend-summary warn" id="div3-summary"></div>
+    <div class="pend-list" id="div3-lista"></div>
+    <div class="mbtns" style="flex-direction:column;">
+      <button class="mbtn-ok vm" onclick="confirmarFechamentoC2ComDiv()">
+        Fechar 2ª Contagem · Iniciar 3ª Contagem
+      </button>
+      <button class="mbtn-cancel" onclick="fecharModal('modal-div3')">Cancelar — Continuar Revisando</button>
     </div>
   </div>
 </div>
@@ -330,14 +372,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 // ═══════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════
-let PRODS = [];     // [{id, nome, linha, qtde_sistema}]
-let ST    = {};     // {id: {entradas:[], obs:'', conferido:false}}
+let PRODS = [];     // [{id, nome, linha, qtde_sistema, custo}]
+let ST    = {};     // {id: {c1:[], c2:[], c3:[], obs:'', conferido:false}}
+let FASE  = 1;      // 1 | 2 | 3
+let META  = {num:'', data:'', resp:''};
+let _onGerarPDF = null;
 let filtroPend = false;
 let query = '';
-let filialInfo = {tag:'', nome:''};
+let filialInfo = {tag:''};
 
 // ═══════════════════════════════════════════════════
-// UPLOAD — MOBILE
+// UPLOAD
 // ═══════════════════════════════════════════════════
 const dropZone = document.getElementById('drop-zone');
 dropZone.addEventListener('dragover', e=>{e.preventDefault();dropZone.classList.add('drag');});
@@ -346,46 +391,43 @@ dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remov
 
 function handleFile(file){
   if(!file) return;
-  const ext = file.name.split('.').pop().toLowerCase();
+  const ext=file.name.split('.').pop().toLowerCase();
   if(!['xls','xlsx'].includes(ext)){toast('Use arquivos .xls ou .xlsx','err');return;}
-  const reader = new FileReader();
-  reader.onload = e => {
+  const reader=new FileReader();
+  reader.onload=e=>{
     try{
-      const wb = XLSX.read(e.target.result,{type:'array'});
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws,{defval:''});
-      processarRows(rows, file.name);
+      const wb=XLSX.read(e.target.result,{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{defval:''});
+      processarRows(rows,file.name);
     }catch(err){toast('Erro ao ler arquivo: '+err.message,'err');}
   };
   reader.readAsArrayBuffer(file);
 }
 
-
-
 // ═══════════════════════════════════════════════════
-// PROCESS ROWS (from XLSX)
+// PROCESS ROWS
 // ═══════════════════════════════════════════════════
-function processarRows(rows, filename){
-  const sample = rows[0]||{};
-  const keys = Object.keys(sample);
-  // Match columns by exact priority — ID must not match NOME
-  const findExact = (candidates) => {
+function processarRows(rows,filename){
+  const sample=rows[0]||{};
+  const keys=Object.keys(sample);
+  const findExact=candidates=>{
     for(const c of candidates){
-      const found=keys.find(k=>k.toUpperCase().replace(/[_ ]/g,'')=== c.toUpperCase().replace(/[_ ]/g,''));
+      const found=keys.find(k=>k.toUpperCase().replace(/[_ ]/g,'')===c.toUpperCase().replace(/[_ ]/g,''));
       if(found) return found;
     }
-    // fallback: contains match
     for(const c of candidates){
       const found=keys.find(k=>k.toUpperCase().replace(/[_ ]/g,'').includes(c.toUpperCase().replace(/[_ ]/g,'')));
       if(found) return found;
     }
     return '';
   };
-  const cNome = findExact(['NOME','PRODUTO','DESCRICAO','DESCRIPTION']);
-  const cId   = findExact(['ID_PRODUTO','IDPRODUTO','ID PRODUTO','CODIGO','COD']).replace(cNome,'') || 
-                keys.find(k=>k!==cNome && /^id/i.test(k)) || '';
-  const cLinha= findExact(['LINHA','GRUPO','CATEGORIA','CATEGORY']);
-  const cQtde = findExact(['QTDE_TOTAL','QTDETOTAL','QTDE TOTAL','QUANTIDADE TOTAL','TOTAL']);
+  const cNome =findExact(['NOME','PRODUTO','DESCRICAO','DESCRIPTION']);
+  const cId   =findExact(['ID_PRODUTO','IDPRODUTO','ID PRODUTO','CODIGO','COD']).replace(cNome,'')||
+               keys.find(k=>k!==cNome&&/^id/i.test(k))||'';
+  const cLinha=findExact(['LINHA','GRUPO','CATEGORIA','CATEGORY']);
+  const cQtde =findExact(['QTDE_TOTAL','QTDETOTAL','QTDE TOTAL','QUANTIDADE TOTAL','TOTAL']);
+  const cCusto=findExact(['CUSTO_UNITARIO','CUSTOUNITAR','VLUNIT','VL_UNIT','CUSTO','VLCUSTO','CUSTO_UN','VALOR_UNIT','VL_CUSTO','PRECOUNID']);
 
   if(!cNome){toast('Coluna NOME não encontrada no arquivo','err');return;}
 
@@ -395,36 +437,25 @@ function processarRows(rows, filename){
     if(q<=0) return;
     const nFull=String(r[cNome]||'').trim();
     if(!nFull) return;
-
-    // ID: from dedicated column, or extract leading digits from nome field
-    let id = cId ? String(r[cId]||'').trim().replace(/\.0+$/,'') : '';
-    if(!id){
-      // Try to extract from nome pattern "12345 - NAME"
-      const m=nFull.match(/^(\d+)\s*-\s*/);
-      if(m) id=m[1];
-    }
-
-    // Display name: strip leading "NNNN - " if present in nome field
-    // Works whether nome column has "12345 - PRODUCT" or just "PRODUCT"
+    let id=cId?String(r[cId]||'').trim().replace(/\.0+$/,''):'';
+    if(!id){const m=nFull.match(/^(\d+)\s*-\s*/);if(m)id=m[1];}
     let nome=nFull.replace(/^\d+\s*-\s*/,'').trim();
-    if(!nome || nome===id) nome=nFull; // safety fallback — never show empty or just code
-
+    if(!nome||nome===id) nome=nFull;
     const linha=String(r[cLinha]||'SEM LINHA').trim();
-    prods.push({id, nome, linha, qtde_sistema:q});
+    const custoRaw=cCusto?String(r[cCusto]||'').replace(',','.').replace(/[^0-9.]/g,''):'';
+    const custo=parseFloat(custoRaw)||0;
+    prods.push({id,nome,linha,qtde_sistema:q,custo});
   });
 
   if(!prods.length){toast('Nenhum produto com estoque encontrado','err');return;}
-
-  // Detect filial from filename digits
   const fm=filename.match(/(\d{2,3})/);
   const ftag=fm?'Filial '+fm[1]:filename.replace(/\.[^.]+$/,'').slice(0,14).toUpperCase();
-  ativarPainel(prods, ftag);
+  ativarPainel(prods,ftag);
 }
 
-function ativarPainel(prods, ftag){
-  // Sort alpha by nome
+function ativarPainel(prods,ftag){
   prods.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR',{sensitivity:'base'}));
-  PRODS=prods; ST={};
+  PRODS=prods; ST={}; FASE=1; META={num:'',data:'',resp:''};
   filialInfo.tag=ftag;
   document.getElementById('hdr-sub').textContent=`Agroquima · ${ftag} · ${prods.length} produtos`;
   document.getElementById('hdr-filial').textContent=ftag.replace('Filial ','F').slice(0,8);
@@ -432,6 +463,8 @@ function ativarPainel(prods, ftag){
   document.getElementById('screen-main').style.display='block';
   document.getElementById('btmbar').style.display='flex';
   document.getElementById('prog-wrap').style.display='block';
+  document.getElementById('fase-banner').style.display='none';
+  atualizarBotaoPDF();
   renderChips(); renderLista(); atualizarProg();
   toast(`${prods.length} produtos carregados ✓`,'ok');
 }
@@ -439,48 +472,80 @@ function ativarPainel(prods, ftag){
 // ═══════════════════════════════════════════════════
 // STATE HELPERS
 // ═══════════════════════════════════════════════════
-function gE(id){if(!ST[id])ST[id]={entradas:[],obs:'',conferido:false};return ST[id];}
-function soma(id){
-  const e=gE(id);
-  if(!e.entradas.length) return null;
-  return e.entradas.reduce((a,b)=>a+(parseFloat(b)||0),0);
+function gE(id){
+  if(!ST[id]) ST[id]={c1:[],c2:[],c3:[],obs:'',conferido:false};
+  return ST[id];
 }
+function entAtual(id){ return gE(id)['c'+FASE]; }
+
+function somaFase(id,fase){
+  const arr=gE(id)['c'+fase];
+  if(!arr||!arr.length) return null;
+  return arr.reduce((a,b)=>a+(parseFloat(b)||0),0);
+}
+function somaAtual(id){ return somaFase(id,FASE); }
+
 function fmt(n){
   if(n==null) return '—';
-  const abs=Math.abs(n);
   if(n%1===0) return n.toLocaleString('pt-BR');
   return n.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:3});
 }
+function fmtMoeda(n){
+  return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function prodsVisiveis(){
+  if(FASE===1) return PRODS;
+  if(FASE===2) return PRODS.filter(p=>{const s=somaFase(p.id,1);return s!==null&&s!==p.qtde_sistema;});
+  if(FASE===3) return PRODS.filter(p=>{const s=somaFase(p.id,2);return s!==null&&s!==p.qtde_sistema;});
+  return [];
+}
+
 function itemStatus(p){
-  const e=gE(p.id);
-  if(e.conferido) return 'ok';
-  const s=soma(p.id);
-  if(s!==null && s!==p.qtde_sistema) return 'div';
-  if(s!==null) return 'dado';
-  return '';
+  if(FASE===1){
+    const e=gE(p.id);
+    if(e.conferido) return 'ok';
+    const s=somaAtual(p.id);
+    if(s!==null&&s!==p.qtde_sistema) return 'div';
+    if(s!==null) return 'dado';
+    return '';
+  } else {
+    return somaAtual(p.id)!==null?'dado':'';
+  }
 }
 
 // ═══════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════
 function renderChips(){
-  const conf=PRODS.filter(p=>gE(p.id).conferido).length;
-  const pend=PRODS.length-conf;
-  const andam=PRODS.filter(p=>soma(p.id)!==null&&!gE(p.id).conferido).length;
-  const div=PRODS.filter(p=>{const s=soma(p.id);return s!==null&&s!==p.qtde_sistema;}).length;
-  document.getElementById('chips').innerHTML=`
-    <div class="chip chip-ok">✓ ${conf} conferidos</div>
-    <div class="chip chip-pend">◌ ${pend} pendentes</div>
-    ${andam?`<div class="chip chip-andam">✎ ${andam} em andamento</div>`:''}
-    ${div?`<div class="chip chip-div">⚠ ${div} divergências</div>`:''}`;
+  const pv=prodsVisiveis();
+  if(FASE===1){
+    const conf=pv.filter(p=>gE(p.id).conferido).length;
+    const pend=pv.length-conf;
+    const andam=pv.filter(p=>somaAtual(p.id)!==null&&!gE(p.id).conferido).length;
+    const div=pv.filter(p=>{const s=somaAtual(p.id);return s!==null&&s!==p.qtde_sistema;}).length;
+    document.getElementById('chips').innerHTML=`
+      <div class="chip chip-ok">✓ ${conf} conferidos</div>
+      <div class="chip chip-pend">◌ ${pend} pendentes</div>
+      ${andam?`<div class="chip chip-andam">✎ ${andam} em andamento</div>`:''}
+      ${div?`<div class="chip chip-div">⚠ ${div} divergências</div>`:''}`;
+  } else {
+    const contados=pv.filter(p=>somaAtual(p.id)!==null).length;
+    const pend=pv.length-contados;
+    document.getElementById('chips').innerHTML=`
+      <div class="chip chip-ok">✓ ${contados} contados</div>
+      <div class="chip chip-pend">◌ ${pend} pendentes</div>`;
+  }
 }
 
 function renderLista(){
-  const q=query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const lista=PRODS.filter(p=>{
-    if(filtroPend&&gE(p.id).conferido) return false;
+  const q=query.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const pv=prodsVisiveis();
+  const lista=pv.filter(p=>{
+    if(filtroPend&&FASE===1&&gE(p.id).conferido) return false;
+    if(filtroPend&&FASE>1&&somaAtual(p.id)!==null) return false;
     if(!q) return true;
-    const h=(p.id+' '+p.nome).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const h=(p.id+' '+p.nome).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
     return h.includes(q);
   });
   const cont=document.getElementById('lista');
@@ -490,58 +555,83 @@ function renderLista(){
   }
   const linhas={};
   lista.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
-  cont.innerHTML=Object.entries(linhas).map(([linha,prods])=>{
-    const c=prods.filter(p=>gE(p.id).conferido).length;
+  cont.innerHTML=Object.entries(linhas).map(([linha,ps])=>{
+    let c;
+    if(FASE===1) c=ps.filter(p=>gE(p.id).conferido).length;
+    else c=ps.filter(p=>somaAtual(p.id)!==null).length;
     const lid=linha.replace(/[^a-zA-Z0-9]/g,'_');
     return `<div class="grupo" id="g-${lid}">
       <div class="ghdr" onclick="toggleGrupo('${lid}')">
         <span>${linha.replace(/^LINHA\s*/i,'')}</span>
-        <div class="ghdr-r"><span class="g-cnt">${c}/${prods.length}</span><span class="g-arr">▾</span></div>
+        <div class="ghdr-r"><span class="g-cnt">${c}/${ps.length}</span><span class="g-arr">▾</span></div>
       </div>
-      <div class="gbody">${prods.map(p=>renderItem(p)).join('')}</div>
+      <div class="gbody">${ps.map(p=>renderItem(p)).join('')}</div>
     </div>`;
   }).join('');
 }
 
 function renderItem(p){
   const e=gE(p.id);
-  const s=soma(p.id);
+  const s=somaAtual(p.id);
+  const ents=entAtual(p.id);
   const st=itemStatus(p);
-  // Pills
-  let pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
-  if(s!==null){
-    pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
-    const d=s-p.qtde_sistema;
-    pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
-  } else if(e.entradas.length>0){
-    pills+=`<span class="pill p-andam">Em andamento</span>`;
+
+  let pills='';
+  if(FASE===1){
+    pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
+    if(s!==null){
+      pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
+      const d=s-p.qtde_sistema;
+      pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
+    } else if(ents.length>0){
+      pills+=`<span class="pill p-andam">Em andamento</span>`;
+    }
+  } else {
+    if(s!==null) pills=`<span class="pill p-cont">Contado: ${fmt(s)}</span>`;
   }
+
   const obsPrev=e.obs?`<div class="item-obs-prev">💬 ${e.obs}</div>`:'';
-  // Entradas
-  const entHtml=e.entradas.map((v,i)=>`
+  const entHtml=ents.map((v,i)=>`
     <div class="e-row" id="er-${p.id}-${i}">
       <span class="e-num">${i+1}</span>
       <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
         oninput="upEntrada('${p.id}',${i},this.value)" onfocus="this.select()">
       <button class="e-del" onclick="delEntrada('${p.id}',${i});event.stopPropagation()">✕</button>
     </div>`).join('');
-  // Soma box
+
   let somaHtml='';
   if(s!==null){
-    const d=s-p.qtde_sistema;
-    const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
-    const sign=d>0?'+':'';
-    // Show breakdown if multiple entries
-    const breakdown=e.entradas.length>1
-      ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${e.entradas.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
-    somaHtml=`<div class="soma-box">
-      <div class="soma-lbl">Total contado<br>${breakdown}</div>
-      <div class="soma-r">
-        <span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span>
-        <span class="soma-num">${fmt(s)}</span>
-      </div>
-    </div>`;
+    if(FASE===1){
+      const d=s-p.qtde_sistema;
+      const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
+      const sign=d>0?'+':'';
+      const breakdown=ents.length>1
+        ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${ents.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
+      somaHtml=`<div class="soma-box">
+        <div class="soma-lbl">Total contado<br>${breakdown}</div>
+        <div class="soma-r"><span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span><span class="soma-num">${fmt(s)}</span></div>
+      </div>`;
+    } else {
+      somaHtml=`<div class="soma-box">
+        <div class="soma-lbl">Total contado</div>
+        <div class="soma-r"><span class="soma-num">${fmt(s)}</span></div>
+      </div>`;
+    }
   }
+
+  const blindHint=FASE>1?`<div class="blind-hint">🔒 Contagem cega — insira a quantidade física sem consultar o sistema</div>`:'';
+
+  const confHtml=FASE===1?`
+    <div class="det-sec">
+      <div class="tog-row">
+        <label class="tog-lbl" for="conf-${p.id}">Marcar como conferido</label>
+        <label class="tog">
+          <input type="checkbox" id="conf-${p.id}" ${e.conferido?'checked':''} onchange="toggleConf('${p.id}',this.checked)">
+          <span class="tog-sl"></span>
+        </label>
+      </div>
+    </div>`:'';
+
   return `
   <div class="item st-${st}" id="item-${p.id}">
     <div class="item-stripe"></div>
@@ -556,7 +646,8 @@ function renderItem(p){
     </div>
     <div class="item-det">
       <div class="det-sec">
-        <div class="det-lbl">Contagens</div>
+        ${blindHint}
+        <div class="det-lbl">Contagem${FASE>1?' ('+FASE+'ª)':''}</div>
         <div class="entradas" id="ent-${p.id}">${entHtml}</div>
         <button class="btn-add-e" onclick="addEntrada('${p.id}')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -568,15 +659,7 @@ function renderItem(p){
         <div class="det-lbl">Observações</div>
         <textarea class="obs-ta" id="obs-${p.id}" placeholder="Anotações, lote, localização…" oninput="upObs('${p.id}',this.value)">${e.obs}</textarea>
       </div>
-      <div class="det-sec">
-        <div class="tog-row">
-          <label class="tog-lbl" for="conf-${p.id}">Marcar como conferido</label>
-          <label class="tog">
-            <input type="checkbox" id="conf-${p.id}" ${e.conferido?'checked':''} onchange="toggleConf('${p.id}',this.checked)">
-            <span class="tog-sl"></span>
-          </label>
-        </div>
-      </div>
+      ${confHtml}
     </div>
   </div>`;
 }
@@ -591,7 +674,7 @@ function toggleItem(id){
   document.querySelectorAll('.item.aberto').forEach(x=>x.classList.remove('aberto'));
   if(!isOpen){
     el.classList.add('aberto');
-    if(!gE(id).entradas.length) addEntrada(id);
+    if(!entAtual(id).length) addEntrada(id);
     setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'nearest'}),60);
   }
 }
@@ -600,7 +683,7 @@ function toggleGrupo(lid){
   if(el) el.classList.toggle('fechado');
 }
 function addEntrada(id){
-  gE(id).entradas.push('');
+  entAtual(id).push('');
   refreshEntradas(id); refreshSoma(id);
   setTimeout(()=>{
     const ins=document.querySelectorAll(`#ent-${id} .e-inp`);
@@ -608,17 +691,19 @@ function addEntrada(id){
   },40);
 }
 function delEntrada(id,idx){
-  gE(id).entradas.splice(idx,1);
+  entAtual(id).splice(idx,1);
   refreshEntradas(id); refreshSoma(id); refreshPills(id);
   renderChips(); atualizarProg();
 }
 function upEntrada(id,idx,val){
-  gE(id).entradas[idx]=val;
+  entAtual(id)[idx]=val;
   refreshSoma(id); refreshPills(id);
   renderChips(); atualizarProg();
-  // Update status stripe
   const el=document.getElementById('item-'+id);
-  if(el){el.className=el.className.replace(/st-\w*/g,'').trim()+' st-'+itemStatus(PRODS.find(p=>p.id===id)||{id});el.classList.remove('st-undefined');}
+  if(el){
+    const p=PRODS.find(x=>x.id===id);
+    if(p){el.className=el.className.replace(/st-\w*/g,'').trim()+' st-'+itemStatus(p);el.classList.remove('st-undefined');}
+  }
 }
 function upObs(id,val){
   gE(id).obs=val;
@@ -647,8 +732,8 @@ function toggleConf(id,checked){
 function refreshEntradas(id){
   const cont=document.getElementById('ent-'+id);
   if(!cont) return;
-  const e=gE(id);
-  cont.innerHTML=e.entradas.map((v,i)=>`
+  const ents=entAtual(id);
+  cont.innerHTML=ents.map((v,i)=>`
     <div class="e-row" id="er-${id}-${i}">
       <span class="e-num">${i+1}</span>
       <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
@@ -658,31 +743,42 @@ function refreshEntradas(id){
 }
 function refreshSoma(id){
   const p=PRODS.find(x=>x.id===id); if(!p) return;
-  const s=soma(id);
+  const s=somaAtual(p.id);
   const det=document.querySelector(`#item-${id} .item-det`); if(!det) return;
   let box=det.querySelector('.soma-box');
   if(s!==null){
-    const e=gE(id);
-    const d=s-p.qtde_sistema;
-    const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
-    const sign=d>0?'+':'';
-    const breakdown=e.entradas.length>1
-      ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${e.entradas.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
-    const html=`<div class="soma-box"><div class="soma-lbl">Total contado<br>${breakdown}</div><div class="soma-r"><span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span><span class="soma-num">${fmt(s)}</span></div></div>`;
-    if(box) box.outerHTML=html; else{const a=det.querySelector('.btn-add-e');if(a)a.insertAdjacentHTML('afterend',html);}
+    const ents=entAtual(id);
+    let html;
+    if(FASE===1){
+      const d=s-p.qtde_sistema;
+      const cls=d>0?'p-pos':d<0?'p-neg':'p-zero';
+      const sign=d>0?'+':'';
+      const breakdown=ents.length>1
+        ?`<div style="font-size:10px;color:var(--tx3);margin-top:4px;text-align:right;">${ents.map((v,i)=>`C${i+1}: ${fmt(parseFloat(v)||0)}`).join(' + ')}</div>`:'';
+      html=`<div class="soma-box"><div class="soma-lbl">Total contado<br>${breakdown}</div><div class="soma-r"><span class="diff-tag pill ${cls}">${sign}${fmt(d)}</span><span class="soma-num">${fmt(s)}</span></div></div>`;
+    } else {
+      html=`<div class="soma-box"><div class="soma-lbl">Total contado</div><div class="soma-r"><span class="soma-num">${fmt(s)}</span></div></div>`;
+    }
+    if(box) box.outerHTML=html;
+    else{const a=det.querySelector('.btn-add-e');if(a)a.insertAdjacentHTML('afterend',html);}
   } else if(box) box.remove();
 }
 function refreshPills(id){
   const p=PRODS.find(x=>x.id===id); if(!p) return;
-  const s=soma(id);
+  const s=somaAtual(p.id);
   const pl=document.querySelector(`#item-${id} .item-pills`); if(!pl) return;
-  let pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
-  if(s!==null){
-    pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
-    const d=s-p.qtde_sistema;
-    pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
-  } else if(gE(id).entradas.length>0){
-    pills+=`<span class="pill p-andam">Em andamento</span>`;
+  let pills='';
+  if(FASE===1){
+    pills=`<span class="pill p-sist">Sist: ${fmt(p.qtde_sistema)}</span>`;
+    if(s!==null){
+      pills+=`<span class="pill p-cont">Cont: ${fmt(s)}</span>`;
+      const d=s-p.qtde_sistema;
+      pills+=d>0?`<span class="pill p-pos">+${fmt(d)}</span>`:d<0?`<span class="pill p-neg">${fmt(d)}</span>`:`<span class="pill p-zero">=</span>`;
+    } else if(entAtual(id).length>0){
+      pills+=`<span class="pill p-andam">Em andamento</span>`;
+    }
+  } else {
+    if(s!==null) pills=`<span class="pill p-cont">Contado: ${fmt(s)}</span>`;
   }
   pl.innerHTML=pills;
 }
@@ -702,79 +798,209 @@ function toggleFiltro(){
   renderLista();
 }
 function atualizarProg(){
-  const tot=PRODS.length; if(!tot) return;
-  const c=PRODS.filter(p=>gE(p.id).conferido).length;
-  const pct=Math.round(c/tot*100);
+  const pv=prodsVisiveis();
+  const tot=pv.length; if(!tot) return;
+  let done;
+  if(FASE===1) done=pv.filter(p=>gE(p.id).conferido).length;
+  else done=pv.filter(p=>somaAtual(p.id)!==null).length;
+  const pct=Math.round(done/tot*100);
   document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-txt').textContent=`${c} de ${tot} conferidos`;
+  document.getElementById('prog-txt').textContent=`${done} de ${tot} ${FASE===1?'conferidos':'contados'}`;
   document.getElementById('prog-pct').textContent=pct+'%';
 }
 
+function atualizarBotaoPDF(){
+  const btn=document.getElementById('btn-pdf');
+  const txt=document.getElementById('btn-pdf-txt');
+  btn.className='btn-pdf'+(FASE===2?' fase2':FASE===3?' fase3':'');
+  if(FASE===1) txt.textContent='Fechar Inventário';
+  else if(FASE===2) txt.textContent='Fechar 2ª Contagem';
+  else txt.textContent='Gerar Relatório de Divergências';
+}
+
+function atualizarFaseBanner(){
+  const banner=document.getElementById('fase-banner');
+  const pv=prodsVisiveis();
+  if(FASE===1){
+    banner.style.display='none';
+  } else {
+    banner.style.display='flex';
+    document.getElementById('fase-lbl').textContent=FASE===2?'2ª Contagem — Reconferência':'3ª Contagem — Reconferência Final';
+    document.getElementById('fase-n').textContent=pv.length+' item'+(pv.length!==1?'s':'');
+  }
+}
+
 // ═══════════════════════════════════════════════════
-// PDF
+// FASE TRANSITION
 // ═══════════════════════════════════════════════════
-function tentarPDF(){
+function iniciarFase(novaFase){
+  FASE=novaFase;
+  atualizarBotaoPDF();
+  atualizarFaseBanner();
+  filtroPend=false;
+  document.getElementById('btn-pend').classList.remove('on');
+  document.getElementById('btn-pend').textContent='Pendentes';
+  document.getElementById('busca').value='';
+  query='';
+  renderChips(); renderLista(); atualizarProg();
+  const pv=prodsVisiveis();
+  toast(`${FASE===2?'2ª':'3ª'} Contagem iniciada — ${pv.length} item${pv.length!==1?'s':''} para recontar`,'ok');
+}
+
+// ═══════════════════════════════════════════════════
+// FECHAR FASE — MAIN ENTRY
+// ═══════════════════════════════════════════════════
+function tentarFecharFase(){
+  if(FASE===1) tentarFecharC1();
+  else if(FASE===2) tentarFecharC2();
+  else tentarFecharC3();
+}
+
+// ── FASE 1 ───────────────────────────────────────
+function tentarFecharC1(){
   const pend=PRODS.filter(p=>!gE(p.id).conferido);
   if(pend.length){
-    const byLinha={};
-    pend.forEach(p=>{if(!byLinha[p.linha])byLinha[p.linha]=[];byLinha[p.linha].push(p);});
+    const byL={};
+    pend.forEach(p=>{if(!byL[p.linha])byL[p.linha]=[];byL[p.linha].push(p);});
     document.getElementById('pend-summary').textContent=
-      `${pend.length} item${pend.length>1?'s':''} sem conferência — conclua antes de gerar o PDF.`;
-    document.getElementById('pend-lista').innerHTML=Object.entries(byLinha).map(([l,ps])=>
+      `${pend.length} item${pend.length>1?'s':''} sem conferência — conclua antes de fechar.`;
+    document.getElementById('pend-lista').innerHTML=Object.entries(byL).map(([l,ps])=>
       `<div style="font-size:10px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;padding:8px 0 4px;">${l.replace(/^LINHA\s*/i,'')}</div>`+
-      ps.map(p=>`<div class="pend-item"><span class="pend-cod">${p.id}</span><div class="pend-info"><div class="pend-nome">${p.nome}</div><div class="pend-sub">Sistema: ${fmt(p.qtde_sistema)}</div></div></div>`).join('')
+      ps.map(p=>`<div class="pend-item"><span class="pend-cod">${p.id}</span><div><div class="pend-nome">${p.nome}</div><div class="pend-sub">Sistema: ${fmt(p.qtde_sistema)}</div></div></div>`).join('')
     ).join('');
     abrirModal('modal-pend'); return;
   }
+
+  const divs=PRODS.filter(p=>{const s=somaFase(p.id,1);return s!==null&&s!==p.qtde_sistema;});
+
+  if(divs.length){
+    document.getElementById('div-summary').textContent=
+      `${divs.length} item${divs.length>1?'s':''} com divergência. Você pode fechar e iniciar a 2ª Contagem.`;
+    document.getElementById('div-lista').innerHTML=divs.map(p=>{
+      const s=somaFase(p.id,1);
+      const d=s-p.qtde_sistema;
+      return `<div class="pend-item">
+        <span class="pend-cod">${p.id}</span>
+        <div><div class="pend-nome">${p.nome}</div>
+        <div class="pend-sub">Sistema: ${fmt(p.qtde_sistema)} · Contado: ${fmt(s)} · Dif: ${d>0?'+':''}${fmt(d)}</div></div>
+      </div>`;
+    }).join('');
+    abrirModal('modal-div'); return;
+  }
+
+  // Tudo ok
+  abrirModalInv('1ª Contagem','📋 Fechar 1ª Contagem','Gerar PDF',meta=>{
+    gerarPDF_C1(meta,false);
+  });
+}
+
+function confirmarFechamentoComDiv(){
+  fecharModal('modal-div');
+  abrirModalInv('1ª Contagem','📋 Fechar 1ª Contagem com Divergência','Gerar PDF e Iniciar 2ª Contagem',meta=>{
+    gerarPDF_C1(meta,true);
+    setTimeout(()=>iniciarFase(2),400);
+  });
+}
+
+// ── FASE 2 ───────────────────────────────────────
+function tentarFecharC2(){
+  const pv=prodsVisiveis();
+  const naoContados=pv.filter(p=>somaAtual(p.id)===null);
+  if(naoContados.length){
+    toast(`${naoContados.length} item${naoContados.length>1?'s':''} ainda sem contagem`,'err');
+    return;
+  }
+
+  const aindaDiv=pv.filter(p=>{const s=somaFase(p.id,2);return s!==null&&s!==p.qtde_sistema;});
+
+  if(aindaDiv.length){
+    document.getElementById('div3-summary').textContent=
+      `${aindaDiv.length} item${aindaDiv.length>1?'s':''} ainda com divergência após a 2ª Contagem.`;
+    document.getElementById('div3-lista').innerHTML=aindaDiv.map(p=>{
+      const s=somaFase(p.id,2);
+      const d=s-p.qtde_sistema;
+      return `<div class="pend-item">
+        <span class="pend-cod">${p.id}</span>
+        <div><div class="pend-nome">${p.nome}</div>
+        <div class="pend-sub">Sistema: ${fmt(p.qtde_sistema)} · 2ª Cont.: ${fmt(s)} · Dif: ${d>0?'+':''}${fmt(d)}</div></div>
+      </div>`;
+    }).join('');
+    abrirModal('modal-div3'); return;
+  }
+
+  // C2 resolveu tudo
+  abrirModalInv('2ª Contagem','✅ Fechar 2ª Contagem','Gerar PDF Final',meta=>{
+    gerarPDF_C2_Resolvido(meta);
+  });
+}
+
+function confirmarFechamentoC2ComDiv(){
+  fecharModal('modal-div3');
+  abrirModalInv('2ª Contagem','📋 Fechar 2ª Contagem com Divergência','Gerar PDF e Iniciar 3ª Contagem',meta=>{
+    gerarPDF_C2_ComDiv(meta);
+    setTimeout(()=>iniciarFase(3),400);
+  });
+}
+
+// ── FASE 3 ───────────────────────────────────────
+function tentarFecharC3(){
+  const pv=prodsVisiveis();
+  const naoContados=pv.filter(p=>somaAtual(p.id)===null);
+  if(naoContados.length){
+    toast(`${naoContados.length} item${naoContados.length>1?'s':''} ainda sem contagem`,'err');
+    return;
+  }
+  abrirModalInv('3ª Contagem','📋 Relatório de Divergências','Gerar Relatório',meta=>{
+    gerarPDF_C3_Relatorio(meta);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// MODAL INV — reutilizável
+// ═══════════════════════════════════════════════════
+function abrirModalInv(contLabel,titulo,btnLabel,callback){
+  document.getElementById('m-titulo').textContent=titulo;
   document.getElementById('m-data').value=new Date().toISOString().split('T')[0];
+  document.getElementById('m-cont').value=contLabel;
+  if(META.num) document.getElementById('m-num').value=META.num;
+  if(META.resp) document.getElementById('m-resp').value=META.resp;
+  document.getElementById('m-btn-ok').textContent=btnLabel;
+  _onGerarPDF=callback;
   abrirModal('modal-inv');
 }
 
-function gerarPDF(){
-  const num=document.getElementById('m-num').value.trim()||'—';
-  const dv=document.getElementById('m-data').value;
-  const cont=document.getElementById('m-cont').value.trim()||'Contagem 1';
-  const resp=document.getElementById('m-resp').value.trim();
+function confirmarGerarPDF(){
+  const meta={
+    num:document.getElementById('m-num').value.trim()||'—',
+    dv:document.getElementById('m-data').value,
+    cont:document.getElementById('m-cont').value.trim()||'Contagem',
+    resp:document.getElementById('m-resp').value.trim()
+  };
+  META.num=meta.num; META.resp=meta.resp;
   fecharModal('modal-inv');
+  if(_onGerarPDF){_onGerarPDF(meta);_onGerarPDF=null;}
+}
 
-  let dFmt='—';
-  if(dv){
-    const d=new Date(dv+'T12:00:00'),now=new Date();
-    dFmt=`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} — ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-  }
+// ═══════════════════════════════════════════════════
+// PDF HELPERS
+// ═══════════════════════════════════════════════════
+function fmtData(dv){
+  if(!dv) return '—';
+  const d=new Date(dv+'T12:00:00'),now=new Date();
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} — ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
 
-  const linhas={};
-  PRODS.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
-
-  const conf=PRODS.filter(p=>gE(p.id).conferido).length;
-  const diverg=PRODS.filter(p=>{const s=soma(p.id);return s!==null&&s!==p.qtde_sistema;}).length;
-
-  let rows='';
-  Object.entries(linhas).forEach(([l,ps])=>{
-    rows+=`<tr class="lhdr"><td colspan="5">${l}</td></tr>`;
-    ps.forEach(p=>{
-      const e=gE(p.id);
-      const s=soma(p.id);
-      const d=s!==null?s-p.qtde_sistema:null;
-      const dStr=d!==null?(d>0?'+'+fmt(d):fmt(d)):'';
-      const dCls=d===null?'':d>0?'pos':d<0?'neg':'zer';
-      // Multi-entry breakdown
-      const break2=e.entradas.length>1?`<span class="ebd">${e.entradas.map((v,i)=>`C${i+1}:${fmt(parseFloat(v)||0)}`).join(' ')}</span>`:'';
-      rows+=`<tr>
-        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
-        <td class="cc">${fmt(p.qtde_sistema)}</td>
-        <td class="cc blue">${s!==null?fmt(s):''}${break2}</td>
-        <td class="cc ${dCls}">${dStr}</td>
-        <td class="oc">${e.obs||''}</td>
-      </tr>`;
-    });
-  });
-
+function abrirJanelaPDF(html,titulo){
   const win=window.open('','_blank');
-  if(!win){toast('Permita pop-ups para gerar o PDF','err');return;}
-  win.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<title>Inventário ${num} — Agroquima</title>
-<style>
+  if(!win){toast('Permita pop-ups para gerar o PDF','err');return false;}
+  win.document.write(html);
+  win.document.close();
+  win.onload=()=>{win.focus();win.print();};
+  toast(`${titulo} gerado! Salve ou imprima.`,'ok');
+  return true;
+}
+
+const CSS_PDF=`
 @page{size:A4 portrait;margin:10mm 13mm;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,Helvetica,sans-serif;font-size:8.5pt;color:#000;}
@@ -790,6 +1016,7 @@ body{font-family:Arial,Helvetica,sans-serif;font-size:8.5pt;color:#000;}
 .sc-ok{color:#16a34a;border-color:#86efac;background:#f0fdf4;}
 .sc-div{color:#dc2626;border-color:#fca5a5;background:#fee2e2;}
 .sc-tot{color:#1D4ED8;border-color:#BFDBFE;background:#EFF6FF;}
+.sc-warn{color:#d97706;border-color:#fcd34d;background:#fef3c7;}
 table{width:100%;border-collapse:collapse;}
 thead tr{background:#0D47A1;color:#fff;}
 th{padding:2.5mm 2mm;font-size:8pt;font-weight:700;text-align:left;}
@@ -797,6 +1024,7 @@ th.c{text-align:center;}
 tr.lhdr td{background:#002B5B;color:#93c5fd;font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:2mm;border:0.3pt solid #001840;}
 tbody tr{border-bottom:0.3pt solid #eee;page-break-inside:avoid;}
 tbody tr:nth-child(even):not(.lhdr){background:#f8fafc;}
+tbody tr.row-div{background:#FFF1F2!important;}
 td{padding:2mm;font-size:8pt;vertical-align:top;border:0.3pt solid #eee;}
 td.pc{font-size:8pt;}
 td.pc .cod{font-size:7pt;font-family:monospace;font-weight:800;color:#0D47A1;background:#EFF6FF;border-radius:3pt;padding:0 3pt;margin-right:2pt;}
@@ -813,25 +1041,94 @@ td.oc{font-size:7.5pt;color:#555;font-style:italic;}
 .sig-lbl{font-size:7pt;color:#666;text-transform:uppercase;letter-spacing:.4px;}
 .sig-name{font-size:9pt;font-weight:700;margin-top:1mm;min-height:5mm;}
 .ftr{margin-top:5mm;font-size:7pt;color:#bbb;text-align:center;border-top:.3pt solid #ddd;padding-top:2mm;display:flex;justify-content:space-between;}
-@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
-</style></head><body>
+.sec-sep{margin-top:8mm;padding-top:6mm;border-top:2pt dashed #D97706;page-break-before:always;}
+.sec-title{font-size:12pt;font-weight:900;margin-bottom:2mm;}
+.sec-sub{font-size:8pt;color:#666;margin-bottom:4mm;}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}`;
+
+// ═══════════════════════════════════════════════════
+// PDF C1
+// ═══════════════════════════════════════════════════
+function gerarPDF_C1(meta,comDiv){
+  const dFmt=fmtData(meta.dv);
+  const linhas={};
+  PRODS.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
+
+  const conf=PRODS.filter(p=>gE(p.id).conferido).length;
+  const divProds=PRODS.filter(p=>{const s=somaFase(p.id,1);return s!==null&&s!==p.qtde_sistema;});
+
+  let rows='';
+  Object.entries(linhas).forEach(([l,ps])=>{
+    rows+=`<tr class="lhdr"><td colspan="5">${l}</td></tr>`;
+    ps.forEach(p=>{
+      const e=gE(p.id);
+      const s=somaFase(p.id,1);
+      const d=s!==null?s-p.qtde_sistema:null;
+      const dStr=d!==null?(d>0?'+'+fmt(d):fmt(d)):'';
+      const dCls=d===null?'':d>0?'pos':d<0?'neg':'zer';
+      const isDiv=s!==null&&s!==p.qtde_sistema;
+      const rowCls=comDiv&&isDiv?' class="row-div"':'';
+      const break2=e.c1.length>1?`<span class="ebd">${e.c1.map((v,i)=>`C${i+1}:${fmt(parseFloat(v)||0)}`).join(' ')}</span>`:'';
+      rows+=`<tr${rowCls}>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc">${fmt(p.qtde_sistema)}</td>
+        <td class="cc blue">${s!==null?fmt(s):''}${break2}</td>
+        <td class="cc ${dCls}">${dStr}</td>
+        <td class="oc">${e.obs||''}</td>
+      </tr>`;
+    });
+  });
+
+  // Seção C2 (contagem de reconferência) — somente se há divergências
+  let c2Section='';
+  if(comDiv&&divProds.length){
+    let c2Rows='';
+    divProds.forEach(p=>{
+      const s=somaFase(p.id,1);
+      const d=s-p.qtde_sistema;
+      c2Rows+=`<tr>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc ${d>0?'pos':'neg'}">${d>0?'+':''}${fmt(d)}</td>
+        <td class="cc"></td>
+        <td class="oc"></td>
+      </tr>`;
+    });
+    c2Section=`<div class="sec-sep">
+      <div class="sec-title" style="color:#D97706;">2ª CONTAGEM — ITENS DIVERGENTES</div>
+      <div class="sec-sub">Itens abaixo apresentaram divergência e devem ser recontados. A quantidade do sistema <strong>não é exibida</strong> para garantir contagem cega.</div>
+      <table>
+        <thead><tr style="background:#B45309;color:#fff;">
+          <th style="width:46%;">CÓD · PRODUTO</th>
+          <th class="c" style="width:14%;">DIFERENÇA C1</th>
+          <th class="c" style="width:18%;">2ª CONTAGEM</th>
+          <th style="width:22%;">OBSERVAÇÕES</th>
+        </tr></thead>
+        <tbody>${c2Rows}</tbody>
+      </table>
+      <div class="sigs" style="margin-top:6mm;">
+        <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela 2ª Contagem</div><div class="sig-name"></div></div>
+        <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+      </div>
+    </div>`;
+  }
+
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Inventário ${meta.num} — Agroquima</title>
+<style>${CSS_PDF}</style></head><body>
 <div class="ph">
   <div class="ph-l">
-    <h1>INVENTÁRIO DE ESTOQUE</h1>
+    <h1>INVENTÁRIO DE ESTOQUE${comDiv?' — COM DIVERGÊNCIA':''}</h1>
     <div class="meta">
-      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${cont}</b><br>
-      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${resp||'_____________________________'}
+      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${meta.cont}</b><br>
+      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${meta.resp||'_____________________________'}
     </div>
   </div>
-  <div class="ph-r">
-    <div class="inv-l">Nº Inventário</div>
-    <div class="inv-n">${num}</div>
-  </div>
+  <div class="ph-r"><div class="inv-l">Nº Inventário</div><div class="inv-n">${meta.num}</div></div>
 </div>
 <div class="summ">
   <div class="schip sc-tot">📦 ${PRODS.length} produtos</div>
   <div class="schip sc-ok">✓ ${conf} conferidos</div>
-  ${diverg?`<div class="schip sc-div">⚠ ${diverg} divergências</div>`:''}
+  ${divProds.length?`<div class="schip sc-div">⚠ ${divProds.length} divergências</div>`:'<div class="schip sc-ok">✓ Sem divergências</div>'}
 </div>
 <table>
 <thead><tr>
@@ -844,28 +1141,279 @@ td.oc{font-size:7.5pt;color:#555;font-style:italic;}
 <tbody>${rows}</tbody>
 </table>
 <div class="sigs">
-  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela Contagem</div><div class="sig-name">${resp}</div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela Contagem</div><div class="sig-name">${meta.resp}</div></div>
   <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
   <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Aprovado por</div><div class="sig-name"></div></div>
 </div>
+${c2Section}
 <div class="ftr"><span>AGROQUIMA PRODUTOS AGROPECUÁRIOS LTDA — Inventário de Estoque</span><span>Emitido em ${dFmt}</span></div>
-</body></html>`);
-  win.document.close();
-  win.onload=()=>{win.focus();win.print();};
-  toast('PDF gerado! Salve ou imprima.','ok');
+</body></html>`;
+
+  abrirJanelaPDF(html,'PDF da 1ª Contagem');
 }
 
+// ═══════════════════════════════════════════════════
+// PDF C2 — Resolvido
+// ═══════════════════════════════════════════════════
+function gerarPDF_C2_Resolvido(meta){
+  const dFmt=fmtData(meta.dv);
+  const prodsC2=PRODS.filter(p=>{const s=somaFase(p.id,1);return s!==null&&s!==p.qtde_sistema;});
+  const linhas={};
+  prodsC2.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
 
+  let rows='';
+  Object.entries(linhas).forEach(([l,ps])=>{
+    rows+=`<tr class="lhdr"><td colspan="5">${l}</td></tr>`;
+    ps.forEach(p=>{
+      const s1=somaFase(p.id,1);
+      const s2=somaFase(p.id,2);
+      const d2=s2!==null?s2-p.qtde_sistema:null;
+      const dCls=d2===null?'':d2>0?'pos':d2<0?'neg':'zer';
+      const dStr=d2!==null?(d2>0?'+'+fmt(d2):fmt(d2)):'';
+      rows+=`<tr>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc">${fmt(p.qtde_sistema)}</td>
+        <td class="cc">${fmt(s1)}</td>
+        <td class="cc blue">${s2!==null?fmt(s2):'—'}</td>
+        <td class="cc ${dCls}">${dStr}</td>
+      </tr>`;
+    });
+  });
+
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>2ª Contagem ${meta.num} — Agroquima</title>
+<style>${CSS_PDF}</style></head><body>
+<div class="ph">
+  <div class="ph-l">
+    <h1>2ª CONTAGEM — DIVERGÊNCIAS RESOLVIDAS</h1>
+    <div class="meta">
+      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${meta.cont}</b><br>
+      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${meta.resp||'___________________________'}
+    </div>
+  </div>
+  <div class="ph-r"><div class="inv-l">Nº Inventário</div><div class="inv-n">${meta.num}</div></div>
+</div>
+<div class="summ">
+  <div class="schip sc-tot">📦 ${prodsC2.length} itens recontados</div>
+  <div class="schip sc-ok">✓ Todas divergências resolvidas</div>
+</div>
+<table>
+<thead><tr>
+  <th style="width:36%;">CÓD · PRODUTO</th>
+  <th class="c" style="width:12%;">SISTEMA</th>
+  <th class="c" style="width:14%;">1ª CONT.</th>
+  <th class="c" style="width:14%;">2ª CONT.</th>
+  <th class="c" style="width:12%;">DIFERENÇA</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>
+<div class="sigs">
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela 2ª Contagem</div><div class="sig-name">${meta.resp}</div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Aprovado por</div><div class="sig-name"></div></div>
+</div>
+<div class="ftr"><span>AGROQUIMA PRODUTOS AGROPECUÁRIOS LTDA — 2ª Contagem</span><span>Emitido em ${dFmt}</span></div>
+</body></html>`;
+
+  abrirJanelaPDF(html,'PDF da 2ª Contagem');
+}
+
+// ═══════════════════════════════════════════════════
+// PDF C2 — Com Divergências (inclui folha C3)
+// ═══════════════════════════════════════════════════
+function gerarPDF_C2_ComDiv(meta){
+  const dFmt=fmtData(meta.dv);
+  const prodsC2=PRODS.filter(p=>{const s=somaFase(p.id,1);return s!==null&&s!==p.qtde_sistema;});
+  const aindaDiv=prodsC2.filter(p=>{const s=somaFase(p.id,2);return s!==null&&s!==p.qtde_sistema;});
+  const linhas={};
+  prodsC2.forEach(p=>{if(!linhas[p.linha])linhas[p.linha]=[];linhas[p.linha].push(p);});
+
+  let rows='';
+  Object.entries(linhas).forEach(([l,ps])=>{
+    rows+=`<tr class="lhdr"><td colspan="6">${l}</td></tr>`;
+    ps.forEach(p=>{
+      const s1=somaFase(p.id,1);
+      const s2=somaFase(p.id,2);
+      const d2=s2!==null?s2-p.qtde_sistema:null;
+      const dCls=d2===null?'':d2>0?'pos':d2<0?'neg':'zer';
+      const dStr=d2!==null?(d2>0?'+'+fmt(d2):fmt(d2)):'';
+      const isDiv=s2!==null&&s2!==p.qtde_sistema;
+      rows+=`<tr${isDiv?' class="row-div"':''}>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc">${fmt(p.qtde_sistema)}</td>
+        <td class="cc">${fmt(s1)}</td>
+        <td class="cc blue">${s2!==null?fmt(s2):'—'}</td>
+        <td class="cc ${dCls}">${dStr}</td>
+        <td class="oc">${isDiv?'⚠ Ainda divergente':''}</td>
+      </tr>`;
+    });
+  });
+
+  let c3Section='';
+  if(aindaDiv.length){
+    let c3Rows='';
+    aindaDiv.forEach(p=>{
+      c3Rows+=`<tr>
+        <td class="pc"><span class="cod">${p.id}</span> ${p.nome}</td>
+        <td class="cc"></td>
+        <td class="oc"></td>
+      </tr>`;
+    });
+    c3Section=`<div class="sec-sep">
+      <div class="sec-title" style="color:#dc2626;">3ª CONTAGEM — ITENS COM DIVERGÊNCIA PERSISTENTE</div>
+      <div class="sec-sub">Itens abaixo persistem com divergência após duas contagens. A quantidade do sistema <strong>não é exibida</strong> para garantir contagem cega.</div>
+      <table>
+        <thead><tr style="background:#dc2626;color:#fff;">
+          <th style="width:50%;">CÓD · PRODUTO</th>
+          <th class="c" style="width:20%;">3ª CONTAGEM</th>
+          <th style="width:30%;">OBSERVAÇÕES</th>
+        </tr></thead>
+        <tbody>${c3Rows}</tbody>
+      </table>
+      <div class="sigs" style="margin-top:6mm;">
+        <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela 3ª Contagem</div><div class="sig-name"></div></div>
+        <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+      </div>
+    </div>`;
+  }
+
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>2ª Contagem ${meta.num} — Agroquima</title>
+<style>${CSS_PDF}</style></head><body>
+<div class="ph">
+  <div class="ph-l">
+    <h1>2ª CONTAGEM — COM DIVERGÊNCIA</h1>
+    <div class="meta">
+      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${meta.cont}</b><br>
+      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${meta.resp||'___________________________'}
+    </div>
+  </div>
+  <div class="ph-r"><div class="inv-l">Nº Inventário</div><div class="inv-n">${meta.num}</div></div>
+</div>
+<div class="summ">
+  <div class="schip sc-tot">📦 ${prodsC2.length} itens recontados</div>
+  <div class="schip sc-div">⚠ ${aindaDiv.length} ainda com divergência</div>
+</div>
+<table>
+<thead><tr>
+  <th style="width:34%;">CÓD · PRODUTO</th>
+  <th class="c" style="width:11%;">SISTEMA</th>
+  <th class="c" style="width:12%;">1ª CONT.</th>
+  <th class="c" style="width:12%;">2ª CONT.</th>
+  <th class="c" style="width:11%;">DIFERENÇA</th>
+  <th style="width:20%;">STATUS</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>
+<div class="sigs">
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela 2ª Contagem</div><div class="sig-name">${meta.resp}</div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+</div>
+${c3Section}
+<div class="ftr"><span>AGROQUIMA PRODUTOS AGROPECUÁRIOS LTDA — 2ª Contagem</span><span>Emitido em ${dFmt}</span></div>
+</body></html>`;
+
+  abrirJanelaPDF(html,'PDF da 2ª Contagem');
+}
+
+// ═══════════════════════════════════════════════════
+// PDF C3 — RELATÓRIO DE DIVERGÊNCIAS COM CUSTO
+// ═══════════════════════════════════════════════════
+function gerarPDF_C3_Relatorio(meta){
+  const dFmt=fmtData(meta.dv);
+  const prodsC3=PRODS.filter(p=>{const s=somaFase(p.id,2);return s!==null&&s!==p.qtde_sistema;});
+  // Items that STILL diverge after C3
+  const aindaDiv=prodsC3.filter(p=>{const s=somaFase(p.id,3);return s!==null&&s!==p.qtde_sistema;});
+
+  let totalImpacto=0;
+  let rows='';
+
+  prodsC3.forEach(p=>{
+    const sist=p.qtde_sistema;
+    const s3=somaFase(p.id,3);
+    const s2=somaFase(p.id,2);
+    const s1=somaFase(p.id,1);
+    const diff=s3!==null?s3-sist:s2-sist;
+    const qtdLancada=s3!==null?s3:s2;
+    const custo=p.custo||0;
+    const valorDiv=Math.abs(diff)*custo;
+    if(custo>0) totalImpacto+=valorDiv;
+
+    const dCls=diff>0?'pos':'neg';
+    rows+=`<tr>
+      <td class="pc"><span class="cod">${p.id}</span></td>
+      <td>${p.nome}</td>
+      <td class="cc">${fmt(sist)}</td>
+      <td class="cc">${s1!==null?fmt(s1):'—'}</td>
+      <td class="cc">${s2!==null?fmt(s2):'—'}</td>
+      <td class="cc blue">${qtdLancada!==null?fmt(qtdLancada):'—'}</td>
+      <td class="cc ${dCls}">${diff>0?'+':''}${fmt(diff)}</td>
+      <td class="cc">${custo>0?fmtMoeda(custo):'—'}</td>
+      <td class="cc neg" style="font-weight:900;">${custo>0?fmtMoeda(valorDiv):'—'}</td>
+    </tr>`;
+  });
+
+  rows+=`<tr style="background:#FEE2E2;">
+    <td colspan="8" style="text-align:right;font-size:9pt;font-weight:900;padding:3mm;color:#7f1d1d;">
+      IMPACTO FINANCEIRO TOTAL DAS DIVERGÊNCIAS:
+    </td>
+    <td class="cc neg" style="font-size:11pt;font-weight:900;">${fmtMoeda(totalImpacto)}</td>
+  </tr>`;
+
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<title>Relatório Divergências ${meta.num} — Agroquima</title>
+<style>${CSS_PDF}
+table th,table td{font-size:7.5pt;}
+</style></head><body>
+<div class="ph">
+  <div class="ph-l">
+    <h1 style="color:#dc2626;">RELATÓRIO DE DIVERGÊNCIAS — 3ª CONTAGEM</h1>
+    <div class="meta">
+      <b>Data/Hora:</b> ${dFmt} &nbsp;&nbsp; <b>${meta.cont}</b><br>
+      <b>Filial:</b> ${filialInfo.tag||'—'} &nbsp;&nbsp; <b>Responsável:</b> ${meta.resp||'___________________________'}
+    </div>
+  </div>
+  <div class="ph-r"><div class="inv-l">Nº Inventário</div><div class="inv-n">${meta.num}</div></div>
+</div>
+<div class="summ">
+  <div class="schip sc-div">⚠ ${prodsC3.length} item${prodsC3.length!==1?'s':''} com divergência persistente</div>
+  ${totalImpacto>0?`<div class="schip sc-div">💰 Impacto: ${fmtMoeda(totalImpacto)}</div>`:''}
+</div>
+<table>
+<thead><tr>
+  <th style="width:7%;">CÓD</th>
+  <th style="width:22%;">PRODUTO</th>
+  <th class="c" style="width:8%;">SISTEMA</th>
+  <th class="c" style="width:8%;">1ª CONT.</th>
+  <th class="c" style="width:8%;">2ª CONT.</th>
+  <th class="c" style="width:8%;">3ª CONT.</th>
+  <th class="c" style="width:9%;">DIVERGÊNCIA</th>
+  <th class="c" style="width:12%;">CUSTO UNIT.</th>
+  <th class="c" style="width:14%;">VALOR DIVERGÊNCIA</th>
+</tr></thead>
+<tbody>${rows}</tbody>
+</table>
+<div class="sigs">
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Responsável pela 3ª Contagem</div><div class="sig-name">${meta.resp}</div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Conferido por</div><div class="sig-name"></div></div>
+  <div class="sig"><div class="sig-line"></div><div class="sig-lbl">Aprovado por</div><div class="sig-name"></div></div>
+</div>
+<div class="ftr"><span>AGROQUIMA PRODUTOS AGROPECUÁRIOS LTDA — Relatório de Divergências</span><span>Emitido em ${dFmt}</span></div>
+</body></html>`;
+
+  abrirJanelaPDF(html,'Relatório de Divergências');
+}
 
 // ═══════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════
 function novaContagem(){
   if(!confirm('Carregar novo relatório? A contagem atual será perdida.')) return;
-  PRODS=[]; ST={};
+  PRODS=[]; ST={}; FASE=1; META={num:'',data:'',resp:''};
   document.getElementById('screen-main').style.display='none';
   document.getElementById('btmbar').style.display='none';
   document.getElementById('prog-wrap').style.display='none';
+  document.getElementById('fase-banner').style.display='none';
   document.getElementById('screen-upload').style.display='flex';
   document.getElementById('hdr-sub').textContent='Agroquima · Carregue o relatório XLS';
   document.getElementById('hdr-filial').textContent='AQM';
@@ -882,7 +1430,7 @@ let _tt;
 function toast(msg,type=''){
   const el=document.getElementById('toast');
   el.textContent=msg; el.className='toast show'+(type?' '+type:'');
-  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),2800);
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),3000);
 }
 </script>
 </body>
