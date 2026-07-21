@@ -1,8 +1,10 @@
-const CACHE = 'aqm-inv-v4';
+const CACHE = 'aqm-inv-v5';
 const ASSETS = [
   './',
   './index.html',
-  './logo.png',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
   'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'
 ];
 
@@ -21,7 +23,6 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Network-first for navigations, cache-first for assets
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request).catch(() => caches.match('./index.html'))
