@@ -1,6 +1,6 @@
 {
   "name": "Inventário Agroquima",
-  "short_name": "Inventário AQM",
+  "short_name": "Inv. Agroquima",
   "description": "Sistema de contagem e inventário de estoque Agroquima",
   "start_url": "./",
   "display": "standalone",
