@@ -1,7 +1,7 @@
 {
   "name": "Inventário Agroquima",
   "short_name": "Inv. Agroquima",
-  "description": "Sistema de contagem e inventário de estoque Agroquima",
+  "description": "Sistema de contagem e inventário de estoque Agroquima — auditoria de filiais",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -21,15 +21,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "icons/screenshot-mobile.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Tela de contagem de estoque"
     }
   ]
 }
