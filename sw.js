@@ -1,7 +1,8 @@
-const CACHE = 'aqm-inv-v1';
+const CACHE = 'aqm-inv-v2';
 const ASSETS = [
   './',
   './index.html',
+  './logo.png',
   'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'
 ];
 
