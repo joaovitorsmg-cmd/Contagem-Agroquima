@@ -1,4 +1,4 @@
-const CACHE = 'aqm-inv-v2';
+const CACHE = 'aqm-inv-v3';
 const ASSETS = [
   './',
   './index.html',
