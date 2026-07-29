@@ -114,7 +114,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 /* Toolbar */
 .toolbar{padding:10px 12px 0;display:flex;gap:8px;}
 .search{flex:1;position:relative;}
-.search input{width:100%;border:1.5px solid var(--bd);border-radius:var(--rs);padding:9px 12px 9px 34px;font-size:14px;background:var(--wh);outline:none;color:var(--tx);}
+.search input{width:100%;border:1.5px solid var(--bd);border-radius:var(--rs);padding:9px 32px 9px 34px;font-size:14px;background:var(--wh);outline:none;color:var(--tx);}
 .search input:focus{border-color:var(--az);}
 .search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--tx3);}
 .btn-filtro{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);padding:9px 12px;font-size:12px;font-weight:700;color:var(--tx2);cursor:pointer;white-space:nowrap;}
@@ -284,23 +284,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .resume-btn-disc{background:var(--vm2);color:var(--vm);border:1.5px solid var(--vm3);border-radius:var(--rs);padding:11px 14px;font-size:13px;font-weight:800;cursor:pointer;}
 
 /* ─── CALCULADORA ─────────────────────────────────── */
-.calc-display{background:#111;color:#fff;border-radius:var(--rs);padding:10px 14px;margin-bottom:8px;text-align:right;}
-.calc-expr{font-size:11px;color:#6b7280;min-height:16px;word-break:break-all;margin-bottom:2px;}
-.calc-result{font-size:30px;font-weight:900;letter-spacing:-.5px;min-height:38px;line-height:1.1;}
-.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px;}
-.calc-btn{border:none;border-radius:var(--rs);padding:14px 4px;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .1s;user-select:none;}
-.calc-btn:active{opacity:.65;}
-.cb-num{background:var(--wh);color:var(--tx);border:1.5px solid var(--bd);}
-.cb-op{background:var(--az4);color:var(--az);border:1.5px solid var(--az3);}
-.cb-eq{background:var(--az);color:#fff;border:none;}
-.cb-ac{background:var(--vm2);color:var(--vm);border:1.5px solid var(--vm3);}
-.cb-bs{background:#f1f5f9;color:var(--tx2);border:1.5px solid var(--bd);}
-.cb-sp{background:#FEF3C7;color:#92400e;border:1.5px solid #FCD34D;font-size:12px;}
 .cb-usar{background:var(--vd);color:#fff;width:100%;border:none;border-radius:var(--rs);padding:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:2px;}
 .cb-usar:active{opacity:.85;}
 .cb-usar:disabled{background:#d1d5db;color:#9ca3af;cursor:default;}
 .btn-calc{background:var(--am2);border:2px dashed #FCD34D;border-radius:8px;padding:9px;font-size:12px;font-weight:800;color:#92400e;cursor:pointer;width:100%;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-calc:active{background:#FEF3C7;}
+/* ─── CALCULADORA SIMPLIFICADA ──────────────────── */
+.calc-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:4px;}
+.calc-preset{background:var(--wh);border:2px solid var(--bd);border-radius:var(--rs);padding:11px 4px;font-size:14px;font-weight:800;color:var(--tx2);cursor:pointer;text-align:center;line-height:1.2;}
+.calc-preset:active{opacity:.7;}
+.calc-preset.sel{background:var(--az4);border-color:var(--az);color:var(--az);}
+.calc-preset small{display:block;font-size:9px;font-weight:600;opacity:.7;margin-top:1px;}
+.calc-preset-outro{color:var(--tx3)!important;font-size:13px!important;}
+.calc-total-box{background:var(--az4);border:2px solid var(--az3);border-radius:var(--rs);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.calc-total-lbl{font-size:12px;font-weight:700;color:var(--az2);}
+.calc-total-num{font-size:32px;font-weight:900;color:var(--az);letter-spacing:-.5px;}
+/* ─── SEARCH CLEAR BUTTON ───────────────────────── */
+.search-clear{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tx3);cursor:pointer;font-size:15px;padding:4px 5px;display:none;line-height:1;border-radius:50%;}
+.search-clear:active{background:var(--bd);}
+.search-clear.vis{display:block;}
 
 
 /* ─── BOTÃO CARREGAR PLANILHA ───────────────────── */
@@ -429,6 +431,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </span>
       <input type="text" id="busca" placeholder="Buscar código ou nome…" oninput="filtrar()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" onclick="limparBusca()" aria-label="Limpar busca">✕</button>
     </div>
     <button class="btn-filtro" id="btn-pend" onclick="toggleFiltro()">Pendentes</button>
     <button class="btn-export" id="btn-export" onclick="exportarResumo()" title="Copiar resumo">
@@ -514,38 +517,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 <div class="mbg" id="modal-calc">
   <div class="modal" style="padding-bottom:calc(16px + var(--sb));">
     <div class="mhandle"></div>
-    <h3>🧮 Calculadora de Estoque</h3>
-    <div class="calc-display">
-      <div class="calc-expr" id="calc-expr"></div>
-      <div class="calc-result" id="calc-result">0</div>
+    <h3>🧮 Calculadora de Pallet</h3>
+
+    <!-- Presets de pallet -->
+    <div class="det-lbl" style="margin-bottom:8px;">Unidades por pallet</div>
+    <div class="calc-presets">
+      <button class="calc-preset" onclick="selecionarPallet(40,'cx')" data-ps="40cx">40<small>caixas</small></button>
+      <button class="calc-preset" onclick="selecionarPallet(45,'bal')" data-ps="45bal">45<small>baldes</small></button>
+      <button class="calc-preset" onclick="selecionarPallet(48,'bal')" data-ps="48bal">48<small>baldes</small></button>
+      <button class="calc-preset" onclick="selecionarPallet(30,'cx')" data-ps="30cx">30<small>caixas</small></button>
+      <button class="calc-preset" onclick="selecionarPallet(30,'bal')" data-ps="30bal">30<small>baldes</small></button>
+      <button class="calc-preset" onclick="selecionarPallet(46,'bal')" data-ps="46bal">46<small>baldes</small></button>
+      <button class="calc-preset calc-preset-outro" onclick="ativarCustomPallet()" id="calc-preset-outro">Outro</button>
     </div>
-    <div class="calc-grid">
-      <button class="calc-btn cb-ac" onclick="calcAc()">AC</button>
-      <button class="calc-btn cb-bs" onclick="calcBs()">⌫</button>
-      <button class="calc-btn cb-sp" onclick="calcOp('×')">× Pal/Cx</button>
-      <button class="calc-btn cb-op" onclick="calcOp('÷')">÷</button>
 
-      <button class="calc-btn cb-num" onclick="calcNum('7')">7</button>
-      <button class="calc-btn cb-num" onclick="calcNum('8')">8</button>
-      <button class="calc-btn cb-num" onclick="calcNum('9')">9</button>
-      <button class="calc-btn cb-op" onclick="calcOp('×')">×</button>
-
-      <button class="calc-btn cb-num" onclick="calcNum('4')">4</button>
-      <button class="calc-btn cb-num" onclick="calcNum('5')">5</button>
-      <button class="calc-btn cb-num" onclick="calcNum('6')">6</button>
-      <button class="calc-btn cb-op" onclick="calcOp('−')">−</button>
-
-      <button class="calc-btn cb-num" onclick="calcNum('1')">1</button>
-      <button class="calc-btn cb-num" onclick="calcNum('2')">2</button>
-      <button class="calc-btn cb-num" onclick="calcNum('3')">3</button>
-      <button class="calc-btn cb-op" onclick="calcOp('+')">+</button>
-
-      <button class="calc-btn cb-num" style="grid-column:span 2;" onclick="calcNum('0')">0</button>
-      <button class="calc-btn cb-num" onclick="calcNum('.')">.</button>
-      <button class="calc-btn cb-eq" onclick="calcEq()">=</button>
+    <!-- Tamanho customizado -->
+    <div id="calc-custom-wrap" style="display:none;margin-top:10px;">
+      <div class="det-lbl">Unidades por pallet (personalizado)</div>
+      <input type="number" id="calc-custom-size" class="e-inp" inputmode="numeric" placeholder="Ex: 36" oninput="calcRecalc()" style="margin-top:4px;font-size:22px;">
     </div>
-    <div style="font-size:10px;color:var(--tx3);text-align:center;margin-bottom:6px;">Ex: 2 × Pal/Cx → 24 × → 12 = 576 unidades</div>
-    <button class="cb-usar" id="calc-usar-btn" onclick="calcUsar()" disabled>Usar resultado</button>
+
+    <!-- Entradas de quantidade -->
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <div style="flex:1;">
+        <div class="det-lbl">Pallets</div>
+        <input type="number" id="calc-pallets" class="e-inp" inputmode="numeric" placeholder="0" oninput="calcRecalc()" style="margin-top:4px;font-size:28px;font-weight:900;text-align:center;">
+      </div>
+      <div style="display:flex;align-items:center;padding-top:22px;color:var(--tx3);font-size:18px;font-weight:700;">+</div>
+      <div style="flex:1;">
+        <div class="det-lbl">Avulsos</div>
+        <input type="number" id="calc-avulso" class="e-inp" inputmode="numeric" placeholder="0" oninput="calcRecalc()" style="margin-top:4px;font-size:28px;font-weight:900;text-align:center;">
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="calc-total-box" id="calc-total-box">
+      <span class="calc-total-lbl">Total</span>
+      <span class="calc-total-num" id="calc-total-num">—</span>
+    </div>
+
+    <button class="cb-usar" id="calc-usar-btn" onclick="calcUsar()" disabled style="margin-top:10px;">Usar resultado</button>
   </div>
 </div>
 
@@ -1101,6 +1112,16 @@ function refreshPills(id){
 function filtrar(){
   query=document.getElementById('busca').value;
   renderLista();
+  const btn=document.getElementById('search-clear');
+  if(btn) btn.classList.toggle('vis',query.length>0);
+}
+function limparBusca(){
+  const el=document.getElementById('busca');
+  el.value=''; query='';
+  renderLista();
+  const btn=document.getElementById('search-clear');
+  if(btn) btn.classList.remove('vis');
+  el.focus();
 }
 function toggleFiltro(){
   filtroPend=!filtroPend;
@@ -1962,6 +1983,7 @@ function novaContagemConfirmar(){
   document.getElementById('busca').value='';
   document.getElementById('file-input').value='';
   query=''; filtroPend=false;
+  const _sc=document.getElementById('search-clear'); if(_sc) _sc.classList.remove('vis');
   document.getElementById('btn-pend').classList.remove('on');
   document.getElementById('btn-pend').textContent='Pendentes';
 }
@@ -2021,86 +2043,79 @@ function _fallbackCopy(txt){
   document.body.removeChild(ta);
 }
 // ═══════════════════════════════════════════════════
-// CALCULADORA DE ESTOQUE
+// CALCULADORA DE PALLET (simplificada)
 // ═══════════════════════════════════════════════════
-let _calcExpr=[];
-let _calcCur='';
 let _calcTargetId=null;
+let _calcPalletSize=0;
+let _calcIsCustom=false;
 
 function abrirCalc(id){
-  _calcTargetId=id; _calcExpr=[]; _calcCur='';
-  _renderCalc();
+  _calcTargetId=id;
+  _calcPalletSize=0;
+  _calcIsCustom=false;
+  const fi=document.getElementById('calc-pallets');
+  const fa=document.getElementById('calc-avulso');
+  const fw=document.getElementById('calc-custom-wrap');
+  const fs=document.getElementById('calc-custom-size');
+  if(fi) fi.value='';
+  if(fa) fa.value='';
+  if(fw) fw.style.display='none';
+  if(fs) fs.value='';
+  document.querySelectorAll('.calc-preset').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('calc-total-num').textContent='—';
+  document.getElementById('calc-usar-btn').disabled=true;
   abrirModal('modal-calc');
+  setTimeout(()=>{if(fi) fi.focus();},120);
 }
-function _renderCalc(){
-  const exprStr=_calcExpr.map(t=>t.v).join(' ')+(_calcCur?' '+_calcCur:'');
-  document.getElementById('calc-expr').textContent=exprStr||'';
-  const res=_calcEval();
+
+function selecionarPallet(size,unit){
+  _calcPalletSize=size;
+  _calcIsCustom=false;
+  document.getElementById('calc-custom-wrap').style.display='none';
+  document.querySelectorAll('.calc-preset').forEach(b=>b.classList.remove('sel'));
+  const key=size+unit;
+  const btn=document.querySelector(`.calc-preset[data-ps="${key}"]`);
+  if(btn) btn.classList.add('sel');
+  calcRecalc();
+  const fi=document.getElementById('calc-pallets');
+  if(fi) fi.focus();
+}
+
+function ativarCustomPallet(){
+  _calcIsCustom=true;
+  _calcPalletSize=0;
+  document.getElementById('calc-custom-wrap').style.display='block';
+  document.querySelectorAll('.calc-preset').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('calc-preset-outro').classList.add('sel');
+  calcRecalc();
+  setTimeout(()=>{document.getElementById('calc-custom-size').focus();},60);
+}
+
+function calcRecalc(){
+  let sz=_calcPalletSize;
+  if(_calcIsCustom) sz=parseInt(document.getElementById('calc-custom-size').value)||0;
+  const pal=parseInt(document.getElementById('calc-pallets').value)||0;
+  const av=parseInt(document.getElementById('calc-avulso').value)||0;
+  const total=pal*sz+av;
+  const numEl=document.getElementById('calc-total-num');
   const btn=document.getElementById('calc-usar-btn');
-  if(res!==null&&isFinite(res)&&_calcExpr.length>0){
-    document.getElementById('calc-result').textContent=fmt(res);
-    if(btn) btn.disabled=false;
+  if(sz>0||av>0){
+    numEl.textContent=fmt(total);
+    btn.disabled=(total<=0);
   } else {
-    document.getElementById('calc-result').textContent=_calcCur||'0';
-    if(btn) btn.disabled=!_calcCur||_calcCur==='.';
+    numEl.textContent='—';
+    btn.disabled=true;
   }
 }
-function _calcEval(){
-  const tokens=[..._calcExpr];
-  if(_calcCur) tokens.push({k:'n',v:_calcCur});
-  if(!tokens.length) return null;
-  if(tokens.length===1) return tokens[0].k==='n'?parseFloat(tokens[0].v):null;
-  const nums=[],ops=[];
-  tokens.forEach(t=>{t.k==='n'?nums.push(parseFloat(t.v)||0):ops.push(t.v);});
-  if(nums.length!==ops.length+1) return null;
-  let i=0;
-  while(i<ops.length){
-    if(ops[i]==='×'||ops[i]==='÷'){
-      const r=ops[i]==='×'?nums[i]*nums[i+1]:nums[i+1]===0?null:nums[i]/nums[i+1];
-      if(r===null) return null;
-      nums.splice(i,2,r); ops.splice(i,1);
-    } else i++;
-  }
-  let r=nums[0];
-  for(let j=0;j<ops.length;j++) r+=ops[j]==='+'?nums[j+1]:-nums[j+1];
-  return r;
-}
-function calcNum(n){
-  if(n==='.'&&_calcCur.includes('.')) return;
-  if(n==='.'&&!_calcCur) _calcCur='0';
-  _calcCur+=n; _renderCalc();
-}
-function calcOp(op){
-  if(!_calcCur){
-    if(_calcExpr.length&&_calcExpr[_calcExpr.length-1].k==='o')
-      {_calcExpr[_calcExpr.length-1].v=op; _renderCalc();} return;
-  }
-  _calcExpr.push({k:'n',v:_calcCur}); _calcCur='';
-  _calcExpr.push({k:'o',v:op}); _renderCalc();
-}
-function calcEq(){
-  if(_calcCur) _calcExpr.push({k:'n',v:_calcCur});
-  _calcCur='';
-  const res=_calcEval();
-  if(res!==null&&isFinite(res)){
-    _calcExpr=[{k:'n',v:String(Math.round(res*1e6)/1e6)}];
-  }
-  _renderCalc();
-}
-function calcAc(){_calcExpr=[]; _calcCur=''; _renderCalc();}
-function calcBs(){
-  if(_calcCur) _calcCur=_calcCur.slice(0,-1);
-  else if(_calcExpr.length){
-    const last=_calcExpr[_calcExpr.length-1];
-    if(last.k==='o') _calcExpr.pop();
-    else{_calcCur=last.v; _calcExpr.pop();}
-  }
-  _renderCalc();
-}
+
 function calcUsar(){
-  const res=_calcEval();
-  if(res===null||!isFinite(res)) return;
-  const val=String(Math.round(res*1e6)/1e6);
+  let sz=_calcPalletSize;
+  if(_calcIsCustom) sz=parseInt(document.getElementById('calc-custom-size').value)||0;
+  const pal=parseInt(document.getElementById('calc-pallets').value)||0;
+  const av=parseInt(document.getElementById('calc-avulso').value)||0;
+  const total=pal*sz+av;
+  if(total<=0) return;
+  const val=String(total);
   fecharModal('modal-calc');
   if(!_calcTargetId) return;
   const ents=entAtual(_calcTargetId);
