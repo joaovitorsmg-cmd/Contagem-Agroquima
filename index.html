@@ -784,6 +784,7 @@ function entAtual(id){ return gE(id)['c'+FASE]; }
 function somaFase(id,fase){
   const arr=gE(id)['c'+fase];
   if(!arr||!arr.length) return null;
+  if(arr.every(v=>v===''||v===null||v===undefined)) return null;
   return arr.reduce((a,b)=>a+(parseFloat(b)||0),0);
 }
 function somaAtual(id){ return somaFase(id,FASE); }
@@ -1060,7 +1061,8 @@ function toggleConf(id,checked){
   const el=document.getElementById('item-'+id);
   if(el){
     el.className=el.className.replace(/st-\w*/g,'').trim();
-    el.classList.add('st-'+(checked?'ok':itemStatus(PRODS.find(p=>p.id===id)||{})));
+    const prod=PRODS.find(p=>p.id===id);
+    el.classList.add('st-'+(checked?'ok':prod?itemStatus(prod):''));
   }
   renderChips(); atualizarProg(); salvarEstado();
   if(checked) toast('Conferido ✓','ok');
@@ -1890,17 +1892,9 @@ function handleInputEnter(id,e){
   const p=PRODS.find(x=>x.id===id);
   if(!p) return;
   const s=somaAtual(id);
-  if(FASE===1&&s!==null&&s===p.qtde_sistema){
-    // Already matched (auto-conferido already fired), close and advance
-    const el=document.getElementById('item-'+id);
-    if(el) el.classList.remove('aberto');
-    avancarParaProximo(id);
-  } else {
-    // Move to next pending item
-    const el=document.getElementById('item-'+id);
-    if(el) el.classList.remove('aberto');
-    avancarParaProximo(id);
-  }
+  const el=document.getElementById('item-'+id);
+  if(el) el.classList.remove('aberto');
+  avancarParaProximo(id);
 }
 
 function avancarParaProximo(currentId){
@@ -2155,7 +2149,6 @@ function calcUsar(){
   } else {
     ents.push(val);
     refreshEntradas(_calcTargetId);
-    refreshSoma(_calcTargetId);
     upEntrada(_calcTargetId,ents.length-1,val);
   }
 }
