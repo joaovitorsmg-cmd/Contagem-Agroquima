@@ -290,8 +290,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 .btn-calc{background:var(--am2);border:2px dashed #FCD34D;border-radius:8px;padding:9px;font-size:12px;font-weight:800;color:#92400e;cursor:pointer;width:100%;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:6px;}
 .btn-calc:active{background:#FEF3C7;}
 /* ─── CALCULADORA SIMPLIFICADA ──────────────────── */
-.calc-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:4px;}
-.calc-preset{background:var(--wh);border:2px solid var(--bd);border-radius:var(--rs);padding:11px 4px;font-size:14px;font-weight:800;color:var(--tx2);cursor:pointer;text-align:center;line-height:1.2;}
+.calc-presets-row{display:flex;gap:7px;min-width:max-content;}
+.calc-preset{background:var(--wh);border:2px solid var(--bd);border-radius:var(--rs);padding:8px 13px;font-size:14px;font-weight:800;color:var(--tx2);cursor:pointer;text-align:center;line-height:1.2;flex-shrink:0;}
 .calc-preset:active{opacity:.7;}
 .calc-preset.sel{background:var(--az4);border-color:var(--az);color:var(--az);}
 .calc-preset small{display:block;font-size:9px;font-weight:600;opacity:.7;margin-top:1px;}
@@ -517,46 +517,59 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
 <div class="mbg" id="modal-calc">
   <div class="modal" style="padding-bottom:calc(16px + var(--sb));">
     <div class="mhandle"></div>
-    <h3>🧮 Calculadora de Pallet</h3>
-
-    <!-- Presets de pallet -->
-    <div class="det-lbl" style="margin-bottom:8px;">Unidades por pallet</div>
-    <div class="calc-presets">
-      <button class="calc-preset" onclick="selecionarPallet(40,'cx')" data-ps="40cx">40<small>caixas</small></button>
-      <button class="calc-preset" onclick="selecionarPallet(45,'bal')" data-ps="45bal">45<small>baldes</small></button>
-      <button class="calc-preset" onclick="selecionarPallet(48,'bal')" data-ps="48bal">48<small>baldes</small></button>
-      <button class="calc-preset" onclick="selecionarPallet(30,'cx')" data-ps="30cx">30<small>caixas</small></button>
-      <button class="calc-preset" onclick="selecionarPallet(30,'bal')" data-ps="30bal">30<small>baldes</small></button>
-      <button class="calc-preset" onclick="selecionarPallet(46,'bal')" data-ps="46bal">46<small>baldes</small></button>
-      <button class="calc-preset calc-preset-outro" onclick="ativarCustomPallet()" id="calc-preset-outro">Outro</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h3 style="margin:0;">🧮 Calculadora de Pallet</h3>
+      <button onclick="fecharModal('modal-calc')" style="background:none;border:none;font-size:22px;color:var(--tx3);cursor:pointer;padding:2px 6px;line-height:1;border-radius:6px;" title="Fechar">✕</button>
     </div>
 
-    <!-- Tamanho customizado -->
-    <div id="calc-custom-wrap" style="display:none;margin-top:10px;">
-      <div class="det-lbl">Unidades por pallet (personalizado)</div>
-      <input type="number" id="calc-custom-size" class="e-inp" inputmode="numeric" placeholder="Ex: 36" oninput="calcRecalc()" style="margin-top:4px;font-size:22px;">
-    </div>
-
-    <!-- Entradas de quantidade -->
-    <div style="display:flex;gap:10px;margin-top:14px;">
-      <div style="flex:1;">
-        <div class="det-lbl">Pallets</div>
-        <input type="number" id="calc-pallets" class="e-inp" inputmode="numeric" placeholder="0" oninput="calcRecalc()" style="margin-top:4px;font-size:28px;font-weight:900;text-align:center;">
+    <!-- Presets — linha única scrollável -->
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:10px;padding-bottom:2px;">
+      <div class="calc-presets-row">
+        <button class="calc-preset" onclick="selecionarPallet(40,'cx')" data-ps="40cx">40<small>cx</small></button>
+        <button class="calc-preset" onclick="selecionarPallet(45,'bal')" data-ps="45bal">45<small>bal</small></button>
+        <button class="calc-preset" onclick="selecionarPallet(48,'bal')" data-ps="48bal">48<small>bal</small></button>
+        <button class="calc-preset" onclick="selecionarPallet(30,'cx')" data-ps="30cx">30<small>cx</small></button>
+        <button class="calc-preset" onclick="selecionarPallet(30,'bal')" data-ps="30bal">30<small>bal</small></button>
+        <button class="calc-preset" onclick="selecionarPallet(46,'bal')" data-ps="46bal">46<small>bal</small></button>
+        <button class="calc-preset calc-preset-outro" onclick="ativarCustomPallet()" id="calc-preset-outro">Outro</button>
       </div>
-      <div style="display:flex;align-items:center;padding-top:22px;color:var(--tx3);font-size:18px;font-weight:700;">+</div>
-      <div style="flex:1;">
-        <div class="det-lbl">Avulsos</div>
-        <input type="number" id="calc-avulso" class="e-inp" inputmode="numeric" placeholder="0" oninput="calcRecalc()" style="margin-top:4px;font-size:28px;font-weight:900;text-align:center;">
+    </div>
+
+    <!-- Tamanho customizado (só aparece com Outro) -->
+    <div id="calc-custom-wrap" style="display:none;margin-bottom:10px;">
+      <input type="number" id="calc-custom-size" class="e-inp" inputmode="numeric" placeholder="Tam. pallet (ex: 36)" min="0" oninput="calcRecalc()" style="font-size:20px;text-align:center;">
+    </div>
+
+    <!-- Fórmula: PALLETS × TAM. + AVULSOS -->
+    <div style="display:flex;align-items:center;gap:4px;margin-bottom:12px;">
+      <div style="flex:1;text-align:center;">
+        <div class="det-lbl" style="margin-bottom:4px;">PALLETS</div>
+        <input type="number" id="calc-pallets" class="e-inp" inputmode="numeric" placeholder="0" min="0" oninput="calcRecalc()" style="font-size:26px;font-weight:900;text-align:center;">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:16px;gap:3px;flex-shrink:0;">
+        <span style="font-size:20px;color:var(--tx3);font-weight:700;">×</span>
+        <span id="calc-tam-badge" style="font-size:11px;font-weight:800;color:var(--az);background:var(--az4);border-radius:5px;padding:1px 6px;min-width:30px;text-align:center;border:1px solid var(--az3);">—</span>
+      </div>
+      <div style="padding-top:20px;flex-shrink:0;">
+        <span style="font-size:20px;color:var(--tx3);font-weight:700;">+</span>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div class="det-lbl" style="margin-bottom:4px;">AVULSOS</div>
+        <input type="number" id="calc-avulso" class="e-inp" inputmode="numeric" placeholder="0" min="0" oninput="calcRecalc()" style="font-size:26px;font-weight:900;text-align:center;">
       </div>
     </div>
 
     <!-- Total -->
-    <div class="calc-total-box" id="calc-total-box">
+    <div class="calc-total-box" id="calc-total-box" style="margin-bottom:10px;">
       <span class="calc-total-lbl">Total</span>
       <span class="calc-total-num" id="calc-total-num">—</span>
     </div>
 
-    <button class="cb-usar" id="calc-usar-btn" onclick="calcUsar()" disabled style="margin-top:10px;">Usar resultado</button>
+    <!-- Botões -->
+    <div style="display:flex;gap:8px;">
+      <button class="mbtn-cancel" style="flex:1;border:none;border-radius:var(--rs);padding:13px;font-size:14px;font-weight:800;cursor:pointer;background:#f1f5f9;color:var(--tx2);" onclick="fecharModal('modal-calc')">Fechar</button>
+      <button class="cb-usar" id="calc-usar-btn" onclick="calcUsar()" disabled style="flex:2;margin:0;">Usar resultado</button>
+    </div>
   </div>
 </div>
 
@@ -625,8 +638,8 @@ function mostrarResumeCard(){
   });
   const nFase=s.FASE;
   document.getElementById('resume-info').innerHTML=
-    `<b>${s.filialInfo.tag||'Inventário'}</b> · ${s.PRODS.length} produtos · `+
-    `${nConf} conferidos · <b>${nFase}ª Contagem em andamento</b>`;
+    `<b>${s.filialInfo.tag||'Inventário'}</b> · Fase ${nFase} · `+
+    `${s.PRODS.length} produtos (${pv.length} nesta fase) · <b>${nConf} conferidos</b>`;
   rc.style.display='block';
 }
 
@@ -754,6 +767,9 @@ function ativarPainel(prods,ftag){
   renderChips(); renderLista(); atualizarProg();
   salvarEstado();
   toast(`${prods.length} produtos carregados ✓`,'ok');
+  if(prods.every(p=>!p.custo)){
+    setTimeout(()=>toast('Coluna de custo não encontrada — impacto financeiro não será calculado',''),2500);
+  }
 }
 
 // ═══════════════════════════════════════════════════
@@ -768,6 +784,7 @@ function entAtual(id){ return gE(id)['c'+FASE]; }
 function somaFase(id,fase){
   const arr=gE(id)['c'+fase];
   if(!arr||!arr.length) return null;
+  if(arr.every(v=>v===''||v===null||v===undefined)) return null;
   return arr.reduce((a,b)=>a+(parseFloat(b)||0),0);
 }
 function somaAtual(id){ return somaFase(id,FASE); }
@@ -895,7 +912,7 @@ function renderItem(p){
   const entHtml=ents.map((v,i)=>`
     <div class="e-row" id="er-${p.id}-${i}">
       <span class="e-num">${i+1}</span>
-      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
+      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0" min="0"
         oninput="upEntrada('${p.id}',${i},this.value)" onfocus="this.select()"
         onkeydown="handleInputEnter('${p.id}',event)">
       <button class="e-del" onclick="delEntrada('${p.id}',${i});event.stopPropagation()">✕</button>
@@ -956,7 +973,7 @@ function renderItem(p){
           Adicionar contagem
         </button>
         <button class="btn-calc" onclick="abrirCalc('${p.id}')">
-          🧮 Calculadora (paletes × caixas × unidades)
+          🧮 Calculadora de Paletes
         </button>
         ${somaHtml}
       </div>
@@ -1044,7 +1061,8 @@ function toggleConf(id,checked){
   const el=document.getElementById('item-'+id);
   if(el){
     el.className=el.className.replace(/st-\w*/g,'').trim();
-    el.classList.add('st-'+(checked?'ok':itemStatus(PRODS.find(p=>p.id===id)||{})));
+    const prod=PRODS.find(p=>p.id===id);
+    el.classList.add('st-'+(checked?'ok':prod?itemStatus(prod):''));
   }
   renderChips(); atualizarProg(); salvarEstado();
   if(checked) toast('Conferido ✓','ok');
@@ -1058,7 +1076,7 @@ function refreshEntradas(id){
   cont.innerHTML=ents.map((v,i)=>`
     <div class="e-row" id="er-${id}-${i}">
       <span class="e-num">${i+1}</span>
-      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0"
+      <input type="number" inputmode="decimal" class="e-inp" value="${v}" placeholder="0" min="0"
         oninput="upEntrada('${id}',${i},this.value)" onfocus="this.select()"
         onkeydown="handleInputEnter('${id}',event)">
       <button class="e-del" onclick="delEntrada('${id}',${i});event.stopPropagation()">✕</button>
@@ -1674,7 +1692,8 @@ function gerarPDF_C3_Relatorio(meta){
     return{p,s1,s2,s3,finalCount,isDivergent,diff,custo,valorDiv,obs:e.obs||''};
   });
 
-  const okItems=analise.filter(a=>!a.isDivergent);
+  const okItems=analise.filter(a=>!a.isDivergent&&a.finalCount!==null);
+  const naoContados=analise.filter(a=>a.finalCount===null);
   const divItems=analise.filter(a=>a.isDivergent);
   const totalImpacto=divItems.reduce((s,a)=>s+a.valorDiv,0);
   const valorTotalSist=PRODS.reduce((s,p)=>s+(p.qtde_sistema*(p.custo||0)),0);
@@ -1786,6 +1805,7 @@ function gerarPDF_C3_Relatorio(meta){
   <div class="schip sc-tot">📦 ${PRODS.length} produtos inventariados</div>
   <div class="schip sc-ok">✓ ${okItems.length} sem divergência</div>
   ${divItems.length?`<div class="schip sc-div">⚠ ${divItems.length} com divergência</div>`:''}
+  ${naoContados.length?`<div class="schip" style="background:#f8fafc;border:1pt solid #cbd5e1;color:#64748b;">◌ ${naoContados.length} não contado(s)</div>`:''}
   ${totalImpacto>0?`<div class="schip sc-div">💰 Impacto: ${fmtMoeda(totalImpacto)}</div>`:''}
   ${valorTotalSist>0?`<div class="schip sc-tot">Valor total sistema: ${fmtMoeda(valorTotalSist)}</div>`:''}
 </div>
@@ -1872,17 +1892,9 @@ function handleInputEnter(id,e){
   const p=PRODS.find(x=>x.id===id);
   if(!p) return;
   const s=somaAtual(id);
-  if(FASE===1&&s!==null&&s===p.qtde_sistema){
-    // Already matched (auto-conferido already fired), close and advance
-    const el=document.getElementById('item-'+id);
-    if(el) el.classList.remove('aberto');
-    avancarParaProximo(id);
-  } else {
-    // Move to next pending item
-    const el=document.getElementById('item-'+id);
-    if(el) el.classList.remove('aberto');
-    avancarParaProximo(id);
-  }
+  const el=document.getElementById('item-'+id);
+  if(el) el.classList.remove('aberto');
+  avancarParaProximo(id);
 }
 
 function avancarParaProximo(currentId){
@@ -2064,6 +2076,8 @@ function abrirCalc(id){
   document.querySelectorAll('.calc-preset').forEach(b=>b.classList.remove('sel'));
   document.getElementById('calc-total-num').textContent='—';
   document.getElementById('calc-usar-btn').disabled=true;
+  const badge=document.getElementById('calc-tam-badge');
+  if(badge) badge.textContent='—';
   abrirModal('modal-calc');
   setTimeout(()=>{if(fi) fi.focus();},120);
 }
@@ -2076,6 +2090,8 @@ function selecionarPallet(size,unit){
   const key=size+unit;
   const btn=document.querySelector(`.calc-preset[data-ps="${key}"]`);
   if(btn) btn.classList.add('sel');
+  const badge=document.getElementById('calc-tam-badge');
+  if(badge) badge.textContent=size;
   calcRecalc();
   const fi=document.getElementById('calc-pallets');
   if(fi) fi.focus();
@@ -2087,13 +2103,19 @@ function ativarCustomPallet(){
   document.getElementById('calc-custom-wrap').style.display='block';
   document.querySelectorAll('.calc-preset').forEach(b=>b.classList.remove('sel'));
   document.getElementById('calc-preset-outro').classList.add('sel');
+  const badge=document.getElementById('calc-tam-badge');
+  if(badge) badge.textContent='?';
   calcRecalc();
   setTimeout(()=>{document.getElementById('calc-custom-size').focus();},60);
 }
 
 function calcRecalc(){
   let sz=_calcPalletSize;
-  if(_calcIsCustom) sz=parseInt(document.getElementById('calc-custom-size').value)||0;
+  if(_calcIsCustom){
+    sz=parseInt(document.getElementById('calc-custom-size').value)||0;
+    const badge=document.getElementById('calc-tam-badge');
+    if(badge) badge.textContent=sz||'?';
+  }
   const pal=parseInt(document.getElementById('calc-pallets').value)||0;
   const av=parseInt(document.getElementById('calc-avulso').value)||0;
   const total=pal*sz+av;
@@ -2127,7 +2149,6 @@ function calcUsar(){
   } else {
     ents.push(val);
     refreshEntradas(_calcTargetId);
-    refreshSoma(_calcTargetId);
     upEntrada(_calcTargetId,ents.length-1,val);
   }
 }
@@ -2135,6 +2156,12 @@ function calcUsar(){
 // ═══════════════════════════════════════════════════
 // INIT — RESTAURA SESSÃO SALVA
 // ═══════════════════════════════════════════════════
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape') return;
+  const open=document.querySelector('.mbg.show');
+  if(open) fecharModal(open.id);
+});
+
 mostrarResumeCard();
 
 // Offline/online badge
