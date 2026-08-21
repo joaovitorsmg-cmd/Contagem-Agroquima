@@ -518,7 +518,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Arial
   <div class="modal" style="padding:12px 14px calc(12px + var(--sb));">
     <div class="mhandle"></div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-      <h3 style="margin:0;font-size:15px;">🧮 Calculadora de Pallet</h3>
+      <h3 style="margin:0;font-size:15px;">🧮 Calculadora de Paletes</h3>
       <button onclick="fecharModal('modal-calc')" style="background:none;border:none;font-size:22px;color:var(--tx3);cursor:pointer;padding:2px 6px;line-height:1;border-radius:6px;">✕</button>
     </div>
 
@@ -631,7 +631,8 @@ function mostrarResumeCard(){
   const pv=s.FASE===1?s.PRODS:s.PRODS.filter(p=>{
     const arr=s.ST[p.id];
     const fase=s.FASE===2?'c1':'c2';
-    const sum=arr&&arr[fase]&&arr[fase].length?arr[fase].reduce((a,b)=>a+(parseFloat(b)||0),0):null;
+    const a=arr&&arr[fase];
+    const sum=(a&&a.length&&!a.every(v=>v===''||v===null||v===undefined))?a.reduce((acc,b)=>acc+(parseFloat(b)||0),0):null;
     return sum!==null&&sum!==p.qtde_sistema;
   });
   const nFase=s.FASE;
@@ -2014,8 +2015,8 @@ function toast(msg,type=''){
 function exportarResumo(){
   const pv=prodsVisiveis();
   const divs=pv.filter(p=>{const s=somaAtual(p.id);return s!==null&&s!==p.qtde_sistema;});
-  const conf=pv.filter(p=>gE(p.id).conferido).length;
-  const pend=pv.filter(p=>!gE(p.id).conferido).length;
+  const conf=pv.filter(p=>somaAtual(p.id)!==null).length;
+  const pend=pv.filter(p=>somaAtual(p.id)===null).length;
   const now=new Date();
   const dataStr=`${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
@@ -2118,9 +2119,9 @@ function calcRecalc(){
   const total=pal*sz+av;
   const numEl=document.getElementById('calc-total-num');
   const btn=document.getElementById('calc-usar-btn');
-  if(sz>0||av>0){
+  if(total>0){
     numEl.textContent=fmt(total);
-    btn.disabled=(total<=0);
+    btn.disabled=false;
   } else {
     numEl.textContent='—';
     btn.disabled=true;
@@ -2155,8 +2156,8 @@ function calcUsar(){
 // ═══════════════════════════════════════════════════
 document.addEventListener('keydown',function(e){
   if(e.key!=='Escape') return;
-  const open=document.querySelector('.mbg.show');
-  if(open) fecharModal(open.id);
+  const all=document.querySelectorAll('.mbg.show');
+  if(all.length) fecharModal(all[all.length-1].id);
 });
 
 mostrarResumeCard();
